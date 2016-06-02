@@ -16,10 +16,12 @@ import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-
+import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -168,41 +170,133 @@ public class Gui2 {
 		FormData formDatar1 = new FormData();
 		formDatar1.top = new FormAttachment(0);
 		formDatar1.left = new FormAttachment(0);
-		formDatar1.right = new FormAttachment(50);
+		formDatar1.right = new FormAttachment(100);
 		formDatar1.bottom = new FormAttachment(100);
 		right1.setLayoutData(formDatar1);
 
-		Composite right2 = new Composite(innerRight, SWT.BORDER);
-		right2.setLayout(new FormLayout());
-		right2.setBackground(new Color(null, 4, 231, 255));
-		FormData formDatar2 = new FormData();
-		formDatar2.top = new FormAttachment(0);
-		formDatar2.left = new FormAttachment(right1, 10);
-		formDatar2.right = new FormAttachment(100);
-		formDatar2.bottom = new FormAttachment(100);
-
-		right2.setLayoutData(formDatar2);
-
 		Composite checkComp = new Composite(right1, SWT.BORDER);
 		checkComp.setLayout(new FormLayout());
-		checkComp.setBackground(new Color(null, 255, 113, 4));
+		//checkComp.setBackground(new Color(null, 255, 113, 4));
 		FormData checkFormData = new FormData();
 		checkFormData.top = new FormAttachment(0);
 		checkFormData.left = new FormAttachment(0);
 		checkFormData.right = new FormAttachment(100);
 		checkFormData.bottom = new FormAttachment(45);
 		checkComp.setLayoutData(checkFormData);
+		
+		Composite fComposite = new Composite(checkComp, SWT.NONE);
+		FormData fCompositeFormData = new FormData();
+		fCompositeFormData.top = new FormAttachment(0);
+		fCompositeFormData.left = new FormAttachment(1);
+		fCompositeFormData.right = new FormAttachment(39);
+		fCompositeFormData.bottom = new FormAttachment(100);
+		fComposite.setLayoutData(fCompositeFormData);
+		
+		fComposite.setLayoutData(fCompositeFormData);
+		
+		fComposite.setLayout(new FormLayout());
+		
+		
+	    Label fLabel =new Label(fComposite, SWT.NULL);
+	    fLabel.setText("F");
+	    List fList = new List(fComposite, SWT.BORDER | SWT.V_SCROLL);
+	    
+	    FormData fListFormData = new FormData();
+	    fListFormData.top = new FormAttachment(10);
+		fListFormData.left = new FormAttachment(1);
+		fListFormData.right = new FormAttachment(99);
+		fListFormData.bottom = new FormAttachment(99);
+		fList.setLayoutData(fListFormData);
+		
+	    FormData fLabelFormData = new FormData();
+	    fLabelFormData.left = new FormAttachment(5);
+	    fLabelFormData.bottom = new FormAttachment(fList);
+	    
+	    fLabel.setLayoutData(fLabelFormData);
+	    
+	    
+	    Composite opComposite = new Composite(checkComp, SWT.NONE);
+		FormData opCompositeFormData = new FormData();
+		opCompositeFormData.top = new FormAttachment(0);
+		opCompositeFormData.left = new FormAttachment(fComposite);
+		opCompositeFormData.right = new FormAttachment(60);
+		opCompositeFormData.bottom = new FormAttachment(100);
+		opComposite.setLayoutData(opCompositeFormData);
+		
+		opComposite.setLayoutData(opCompositeFormData);
+		
+		opComposite.setLayout(new FormLayout());
+	    List opList = new List(opComposite, SWT.BORDER | SWT.V_SCROLL);
+	    Label opLabel = new Label(opComposite, SWT.NULL);
+	    opLabel.setText("Op");
+	    
+	    FormData opListFormData = new FormData();
+	    opListFormData.top = new FormAttachment(10);
+		opListFormData.left = new FormAttachment(1);
+		opListFormData.right = new FormAttachment(99);
+		opListFormData.bottom = new FormAttachment(99);
+		opList.setLayoutData(opListFormData);
+		
+	    FormData opLabelFormData = new FormData();
+	    opLabelFormData.bottom = new FormAttachment(opList);
+	    opLabelFormData.left = new FormAttachment(5);
+	    opLabel.setLayoutData(opLabelFormData);
 
+	    Composite thComposite = new Composite(checkComp, SWT.NONE);
+		FormData thCompositeFormData = new FormData();
+		thCompositeFormData.top = new FormAttachment(0);
+		thCompositeFormData.left = new FormAttachment(opComposite);
+		thCompositeFormData.right = new FormAttachment(100);
+		thCompositeFormData.bottom = new FormAttachment(100);
+		thComposite.setLayoutData(thCompositeFormData);
+		
+		thComposite.setLayoutData(thCompositeFormData);
+		
+		thComposite.setLayout(new FormLayout());
+	    
+	    Label thLabel = new Label(thComposite, SWT.NULL);
+	    thLabel.setText("Thresholds");
+	    List thList = new List(thComposite, SWT.BORDER | SWT.V_SCROLL);
+	    FormData thListFormData = new FormData();
+	    thListFormData.top = new FormAttachment(10);
+		thListFormData.left = new FormAttachment(1);
+		thListFormData.right = new FormAttachment(99);
+		thListFormData.bottom = new FormAttachment(99);
+		thList.setLayoutData(thListFormData);
+		
+	    FormData thLabelFormData = new FormData();
+	    thLabelFormData.left = new FormAttachment(5);
+	    thLabelFormData.bottom = new FormAttachment(thList);
+	    thLabel.setLayoutData(thLabelFormData);
+	    
+	    
+	    
 		Composite doComp = new Composite(right1, SWT.BORDER);
 		doComp.setLayout(new FormLayout());
-		doComp.setBackground(new Color(null, 4, 231, 255));
+		
 		FormData doFormData = new FormData();
 		doFormData.top = new FormAttachment(checkComp, 10);
 		doFormData.left = new FormAttachment(0);
 		doFormData.right = new FormAttachment(100);
 		doFormData.bottom = new FormAttachment(100);
 		doComp.setLayoutData(doFormData);
-
+		
+		List doList = new List(doComp, SWT.BORDER | SWT.V_SCROLL);
+		Label doLabel = new Label(doComp, SWT.NONE);
+		doLabel.setText("Do");
+		
+		FormData doListFormData = new FormData();
+		doListFormData.top = new FormAttachment(10);
+		doListFormData.left = new FormAttachment(5);
+		doListFormData.right = new FormAttachment(95);
+		doListFormData.bottom = new FormAttachment(95);
+		doList.setLayoutData(doListFormData);
+		
+		FormData doLabelFormData = new FormData();
+		doLabelFormData.left = new FormAttachment(20);
+		doLabelFormData.bottom = new FormAttachment(doList);
+		doLabel.setLayoutData(doLabelFormData);
+		
 		Composite innerBottom = new Composite(outer, SWT.BORDER);
 		innerBottom.setLayout(new FormLayout());
 
