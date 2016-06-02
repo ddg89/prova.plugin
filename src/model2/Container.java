@@ -133,6 +133,15 @@ public class Container {
 	public void setType(String type) {
 		this.type = type;
 	}
-	
+	public void addOperationToCheck(Operation op , Check check){
+		if (this.getCheck().equals(check)) {
+			this.check.addOperation(op);
+		}
+	}
+	public void removeOperationFromCheck(Operation op , Check check){
+		if (this.getCheck().equals(check)) {
+			this.check.removeOperation(op);
+		}
+	}
 	
 }

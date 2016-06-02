@@ -52,6 +52,16 @@ public class Context {
 			this.container=null;
 		}
 	}
+	public void addOperationToCheck (Container container, Check check ,Operation op){
+		if (this.getContainer().equals(container)) {
+			this.container.addOperationToCheck(op, check);
+		}
+	}
+	public void removeOperationFromCheck(Container container, Check check ,Operation op){
+		if(this.getContainer().equals(container)){
+			this.container.removeOperationFromCheck(op, check);
+		}
+	}
 	public void setContainerMessage(Container Container, Message msg){
 		if (this.getContainer().equals(Container)) {
 			this.container.setMessage(msg);

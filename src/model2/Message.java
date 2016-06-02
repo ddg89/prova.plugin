@@ -2,7 +2,7 @@ package model2;
 
 public class Message {
 	private String text;
-	private Critique parent;
+	private Container parent;
 
 	public String getName() {
 		return text;
@@ -12,7 +12,7 @@ public class Message {
 		this.text = text;
 	}
 
-	public Message(String text,Critique parent) {
+	public Message(String text,Container parent) {
 		super();
 		this.text = text;
 		this.parent = parent;
@@ -29,11 +29,11 @@ public class Message {
 		this.text = text;
 	}
 
-	public Critique getParent() {
+	public Container getParent() {
 		return parent;
 	}
 
-	public void setParent(Critique parent) {
+	public void setParent(Container parent) {
 		this.parent = parent;
 	}
 

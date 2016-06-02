@@ -7,15 +7,15 @@ public class Fix {
 	
 	private Title title;
 	private List<Do> doList;
-	private Critique parent;
+	private Container parent;
 	
-	public Fix(Title title, List<Do> doList,Critique parent) {
+	public Fix(Title title, List<Do> doList,Container parent) {
 		super();
 		this.title = title;
 		this.doList = doList;
 		this.parent=parent;
 	}
-	public Fix(Critique parent){
+	public Fix(Container parent){
 		this.title=null;
 		this.doList = new ArrayList<Do>();
 		this.parent = parent;
@@ -31,11 +31,11 @@ public class Fix {
 	public void removeTitle(){
 		this.title=null;
 	}
-	public Critique getParent() {
+	public Container getParent() {
 		return parent;
 	}
 
-	public void setParent(Critique parent) {
+	public void setParent(Container parent) {
 		this.parent = parent;
 	}
 

@@ -7,17 +7,23 @@ public class Check {
 	private List<Operation> operations;
 	private Container parent;
 	
-	public Check(List<Predicate> pList, List<Operation> operations,Container parent) {
+	public Check(List<Operation> operations,Container parent) {
 		super();
-		
+		this.operations=operations;
 		this.parent=parent;
 	}
 
-	public Check(){
-		
+	public Check(Container parent){
+		this.operations=new ArrayList<Operation>();
+		this.parent = parent;
 		
 	}
-	
+	public void addOperation(Operation op){
+		this.operations.add(op);
+	}
+	public void removeOperation(Operation op){
+		this.operations.remove(op);
+	}
 	public Container getParent() {
 		return parent;
 	}

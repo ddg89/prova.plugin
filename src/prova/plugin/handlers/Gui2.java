@@ -34,6 +34,7 @@ import model2.Constraint;
 import model2.Container;
 import model2.Context;
 import model2.Critique;
+//import model2.Critique;
 import model2.Do;
 import model2.Evl2;
 import model2.F;
@@ -263,10 +264,10 @@ public class Gui2 {
 
 							TreeItem temp = selected[0];
 
-							Critique cSelected = (Critique) temp.getData();
+							Container cSelected = (Container) temp.getData();
 
-							Check checkNew = new Check();
-							checkNew.setParent(cSelected);
+							Check checkNew = new Check(cSelected);
+							
 
 							// set Check to critique
 							evl.setCheckToContainer(cSelected.getParent(), cSelected, checkNew);
@@ -285,7 +286,7 @@ public class Gui2 {
 
 							TreeItem temp = selected[0];
 
-							Critique cSelected = (Critique) temp.getData();
+							Container cSelected = (Container) temp.getData();
 
 							String txtMsg = "";
 							MyTitleAreaDialogMessage dialogMessage = new MyTitleAreaDialogMessage(shell);
@@ -316,7 +317,7 @@ public class Gui2 {
 
 							TreeItem temp = selected[0];
 
-							Critique cSelected = (Critique) temp.getData();
+							Container cSelected = (Container) temp.getData();
 
 							Fix fixNew = new Fix(cSelected);
 
@@ -369,7 +370,7 @@ public class Gui2 {
 
 							Do d = new Do(fixSelected);
 
-							Critique fpar = fixSelected.getParent();
+							Container fpar = fixSelected.getParent();
 							evl.addDotoFix(fpar.getParent(), fpar, fixSelected, d);
 
 							tree.removeAll();
@@ -517,7 +518,7 @@ public class Gui2 {
 							TreeItem temp = selected[0];
 							Do DoTemp2 = (Do) temp.getData();
 							Fix fixTemp = DoTemp2.getParent();
-							Critique cTemp = fixTemp.getParent();
+							Container cTemp = fixTemp.getParent();
 							evl.removeDoFromFix(cTemp.getParent(), cTemp, fixTemp, DoTemp2);
 
 							tree.removeAll();
@@ -536,7 +537,7 @@ public class Gui2 {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
 							Fix fixToDel = (Fix) temp.getData();
-							Critique critTemp = fixToDel.getParent();
+							Container critTemp = fixToDel.getParent();
 							Context contTemp = critTemp.getParent();
 
 							evl.removeFixFromC(contTemp, critTemp, fixToDel);
@@ -556,7 +557,7 @@ public class Gui2 {
 					removeCritiqueItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
-							Critique critToDel = (Critique) temp.getData();
+							Container critToDel = (Container) temp.getData();
 							Context contTemp = critToDel.getParent();
 							evl.removeContainer(contTemp, critToDel);
 							tree.removeAll();
@@ -574,7 +575,7 @@ public class Gui2 {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
 							Message messageTemp = (Message) temp.getData();
-							Critique critTemp = messageTemp.getParent();
+							Container critTemp = messageTemp.getParent();
 
 							evl.removeCMessage(critTemp.getParent(), critTemp);
 							tree.removeAll();
@@ -593,7 +594,7 @@ public class Gui2 {
 
 							Title titleTemp = (Title) temp.getData();
 							Fix fixTemp = titleTemp.getParent();
-							Critique critTemp = fixTemp.getParent();
+							Container critTemp = fixTemp.getParent();
 							evl.removeTitleFromFix(critTemp.getParent(), critTemp, fixTemp);
 
 							tree.removeAll();
