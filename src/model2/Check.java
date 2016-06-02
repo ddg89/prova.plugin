@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Check {
-	private Guard guards;
-	private Critique parent;
+	private List<Operation> operations;
+	private Container parent;
 	
-	public Check(List<Predicate> pList, List<String> operators,Critique parent) {
+	public Check(List<Predicate> pList, List<Operation> operations,Container parent) {
 		super();
 		
 		this.parent=parent;
@@ -18,29 +18,30 @@ public class Check {
 		
 	}
 	
-	public Critique getParent() {
+	public Container getParent() {
 		return parent;
 	}
-	public void setParent(Critique parent) {
+	public void setParent(Container parent) {
 		this.parent = parent;
 	}
 	
 	
 	public String toString(){
 		String res = "check{\n";
-		res+=this.getGuards().toString();
+		//res+=this.getGuards().toString();
 		res+="\n}\n";
 		
 		return res;
 		
 	}
 
-	public Guard getGuards() {
-		return guards;
+	public List<Operation> getOperations() {
+		return operations;
 	}
 
-	public void setGuards(Guard guards) {
-		this.guards = guards;
+	public void setOperations(List<Operation> operations) {
+		this.operations = operations;
 	}
 
+	
 }

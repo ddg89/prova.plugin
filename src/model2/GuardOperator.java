@@ -1,7 +1,7 @@
 package model2;
 
 public enum GuardOperator {
-	AND,OR,XOR;
+	AND,OR,XOR,EMPTY;
 	public String toString(){
 		switch (this) {
 		case AND:
@@ -10,7 +10,8 @@ public enum GuardOperator {
 			return "OR";
 		case XOR:
 			return "XOR";
-			
+		case EMPTY:
+			return "";
 			
 
 		

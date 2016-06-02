@@ -12,6 +12,24 @@ public class BinaryPredicate extends Predicate {
 	public String toString(){
 		return left.toString()+op.toString()+right.toString();
 	}
+	public F getLeft() {
+		return left;
+	}
+	public void setLeft(F left) {
+		this.left = left;
+	}
+	public Threshold getRight() {
+		return right;
+	}
+	public void setRight(Threshold right) {
+		this.right = right;
+	}
+	public BinaryPredicateOperator getOp() {
+		return op;
+	}
+	public void setOp(BinaryPredicateOperator op) {
+		this.op = op;
+	}
 		
 
 }

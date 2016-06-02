@@ -27,7 +27,6 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
-import model2.BinaryOp;
 import model2.BinaryPredicate;
 import model2.BinaryPredicateOperator;
 import model2.Check;
@@ -42,10 +41,10 @@ import model2.Fix;
 import model2.Guard;
 import model2.GuardOperator;
 import model2.Message;
+import model2.Operation;
 import model2.Predicate;
 import model2.Threshold;
 import model2.Title;
-import model2.UnaryOp;
 
 public class Gui2 {
 	private Menu menu, menu2;
@@ -498,9 +497,9 @@ public class Gui2 {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
 							Check checkTemp2 = (Check) temp.getData();
-							Critique critTtemp2 = checkTemp2.getParent();
+							Container contTtemp2 = checkTemp2.getParent();
 
-							evl.removeCheck(critTtemp2.getParent(), critTtemp2, checkTemp2);
+							evl.removeCheck(contTtemp2.getParent(), contTtemp2, checkTemp2);
 							tree.removeAll();
 							tree.setData(evl);
 							fillTreeModel2(tree, evl);
@@ -693,18 +692,17 @@ public class Gui2 {
 				checkItem.setText("check");
 				checkItem.setData(check);
 
-				/*for (Predicate predicate : check.getpList()) {
-
-					for (String op : check.getOperators()) {
-						TreeItem checkChild1 = new TreeItem(checkItem, SWT.NONE);
-						checkChild1.setText(predicate.toString());
-						checkChild1.setData(predicate);
-
+				for (Operation op : check.getOperations()) {
+					
+					TreeItem checkChild1 = new TreeItem(checkItem, SWT.NONE);
+					checkChild1.setText(op.getPredicate().toString());
+					checkChild1.setData(op.getPredicate());
+					if(op.getOp()==GuardOperator.EMPTY){
 						TreeItem checkChild2 = new TreeItem(checkItem, SWT.NONE);
-						checkChild2.setText(op);
-						checkChild2.setData(op);
+						checkChild2.setText(op.getOp().toString());
+						checkChild2.setData(op.getOp());
 					}
-				}*/
+				}
 			}
 			Message message = cont.getMessage();
 			if (message != null) {
