@@ -31,7 +31,7 @@ public class Operation {
 		this.parent = parent;
 	}
 	public String toString(){
-		return predicate.toString()+op.toString();
+		return op.toString()+predicate.toString();
 	}
 
 }

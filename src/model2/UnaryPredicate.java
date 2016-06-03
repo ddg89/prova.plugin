@@ -8,7 +8,7 @@ public class UnaryPredicate extends Predicate {
 		this.f = f;
 	}
 	public String toString(){
-		return op.toString()+f.toString();
+		return " "+op.toString()+f.toString()+" ";
 	}
 	public UnaryOperator getOp() {
 		return op;

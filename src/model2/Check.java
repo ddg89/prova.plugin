@@ -34,7 +34,10 @@ public class Check {
 	
 	public String toString(){
 		String res = "check{\n";
-		//res+=this.getGuards().toString();
+		for(Operation op : this.getOperations()){
+			res+=op.toString();
+		}
+		;
 		res+="\n}\n";
 		
 		return res;

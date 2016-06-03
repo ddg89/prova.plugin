@@ -1,7 +1,7 @@
 package model2;
 
 public enum UnaryOperator {
-	NOT,ABSENT;
+	NOT,EMPTY;
 	
 	public String toString() {
 		switch (this) { 
