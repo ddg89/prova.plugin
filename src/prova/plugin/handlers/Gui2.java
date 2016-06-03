@@ -291,6 +291,7 @@ public class Gui2 {
 		doListFormData.right = new FormAttachment(95);
 		doListFormData.bottom = new FormAttachment(95);
 		doList.setLayoutData(doListFormData);
+		doList.setVisible(false);
 		
 		FormData doLabelFormData = new FormData();
 		doLabelFormData.left = new FormAttachment(20);
