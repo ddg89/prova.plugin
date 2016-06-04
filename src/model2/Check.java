@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Check {
+	
+
 	private List<Operation> operations;
 	private Container parent;
 	
@@ -12,7 +14,9 @@ public class Check {
 		this.operations=operations;
 		this.parent=parent;
 	}
-
+	public Check() {
+		
+	}
 	public Check(Container parent){
 		this.operations=new ArrayList<Operation>();
 		this.parent = parent;

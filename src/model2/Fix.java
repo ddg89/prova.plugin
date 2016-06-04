@@ -20,7 +20,9 @@ public class Fix {
 		this.doList = new ArrayList<Do>();
 		this.parent = parent;
 	}
-
+	public Fix(){
+		
+	}
 	public Title getTitle() {
 		return title;
 	}

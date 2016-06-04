@@ -13,6 +13,9 @@ public class Title {
 		
 		this.parent = parent;
 	}
+	public Title(){
+		
+	}
 	public String getText() {
 		return text;
 	}

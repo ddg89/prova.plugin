@@ -1,4 +1,4 @@
-package prova.plugin.handlers;
+package dialogs;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
@@ -11,16 +11,16 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
-public class MyTitleAreaDialogCont extends TitleAreaDialog {
+public class MyTitleAreaDialogMessage extends TitleAreaDialog {
 
-	private Text txtContextName;
+	private Text txtContextMessage;
 	  
 
 	  private String contextName;
-	  private String title="Insert Context name",message="Insert the name of the Context",lab="Context Name";
+	  private String title="Insert Messagge",message="Insert the content of message construct.",lab="Message";
 	  
 
-	  public MyTitleAreaDialogCont(Shell parentShell) {
+	  public MyTitleAreaDialogMessage(Shell parentShell) {
 	    super(parentShell);
 	    
 	  }
@@ -54,8 +54,8 @@ public class MyTitleAreaDialogCont extends TitleAreaDialog {
 	    dataFirstName.grabExcessHorizontalSpace = true;
 	    dataFirstName.horizontalAlignment = GridData.FILL;
 
-	    txtContextName = new Text(container, SWT.BORDER);
-	    txtContextName.setLayoutData(dataFirstName);
+	    txtContextMessage = new Text(container, SWT.BORDER);
+	    txtContextMessage.setLayoutData(dataFirstName);
 	  }
 	  
 	  
@@ -69,16 +69,16 @@ public class MyTitleAreaDialogCont extends TitleAreaDialog {
 	  // save content of the Text fields because they get disposed
 	  // as soon as the Dialog closes
 	  private void saveInput() {
-	    contextName = txtContextName.getText();
+	    contextName = txtContextMessage.getText();
 	   
 	  }
 
 	  @Override
 	  protected void okPressed() {
-	    saveInput();
-	    if(txtContextName.getText().isEmpty())
-	    	return;
-	    super.okPressed();
+		  saveInput();
+		  if(txtContextMessage.getText().isEmpty())
+		    	return;
+		    super.okPressed();
 	  }
 
 	  public String getName() {

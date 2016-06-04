@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Guard {
+	
 	private List<Operation> operatorList ;
 	public Guard(){
 		this.operatorList = new ArrayList<Operation>();
@@ -23,6 +24,12 @@ public class Guard {
 		res+="\n";
 		return res;
 	
+	}
+	public List<Operation> getOperatorList() {
+		return operatorList;
+	}
+	public void setOperatorList(List<Operation> operatorList) {
+		this.operatorList = operatorList;
 	}
 
 }

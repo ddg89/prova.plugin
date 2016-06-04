@@ -1,4 +1,4 @@
-package prova.plugin.handlers;
+package dialogs;
 
 import org.eclipse.jface.dialogs.IMessageProvider;
 import org.eclipse.jface.dialogs.TitleAreaDialog;

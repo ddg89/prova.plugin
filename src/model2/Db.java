@@ -8,7 +8,7 @@ import model2.F;
 import model2.Threshold;
 
 class Db {
-
+	
 	private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
 
 	static final String DB_URL = "jdbc:mysql://localhost/plugin";
@@ -16,7 +16,9 @@ class Db {
 
 	static final String USER = "root";
 	static final String PASS = "";
-
+	public Db(){
+		
+	}
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection conn = null;
 
@@ -177,5 +179,23 @@ class Db {
 		}
 		rs1.close();
 		return fList;
+	}
+	public Connection getDbConnection() {
+		return dbConnection;
+	}
+	public void setDbConnection(Connection dbConnection) {
+		this.dbConnection = dbConnection;
+	}
+	public static String getDriverName() {
+		return DRIVER_NAME;
+	}
+	public static String getDbUrl() {
+		return DB_URL;
+	}
+	public static String getUser() {
+		return USER;
+	}
+	public static String getPass() {
+		return PASS;
 	}
 }

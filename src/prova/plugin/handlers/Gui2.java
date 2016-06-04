@@ -24,11 +24,17 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
+import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
 
+import dialogs.MyTitleAreaDialogCont;
+import dialogs.MyTitleAreaDialogCrit;
+import dialogs.MyTitleAreaDialogFixTitle;
+import dialogs.MyTitleAreaDialogMessage;
+import dialogs.MyTitleAreaDialogNewProject;
 import model2.BinaryPredicate;
 import model2.BinaryPredicateOperator;
 import model2.Check;
@@ -388,7 +394,7 @@ public class Gui2 {
 							dialogMessage.create();
 							if (dialogMessage.open() == Window.OK) {
 								txtMsg = dialogMessage.getName();
-								// System.out.println(txtMsg);
+								System.out.println(txtMsg);
 
 							} else {
 								return;
@@ -724,6 +730,39 @@ public class Gui2 {
 
 		Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
 		cascadeFileMenu.setMenu(fileMenu);
+		
+		MenuItem newItemMenuItem = new MenuItem(fileMenu, SWT.PUSH);
+		newItemMenuItem.setText("&New Evl Project");
+		newItemMenuItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				MyTitleAreaDialogNewProject dialog = new MyTitleAreaDialogNewProject(shell);
+				dialog.create();
+				boolean confirm = false;
+				if (dialog.open() == Window.OK) {
+					confirm = dialog.getConfirm();
+
+				} else {
+					return;
+				}
+
+				
+				if(confirm){
+					tree.removeAll();
+					evl = new Evl2();
+					fillTreeModel2(tree, evl);
+				}
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		MenuItem exitItem = new MenuItem(fileMenu, SWT.PUSH);
 		exitItem.setText("&Exit");
 		exitItem.addSelectionListener(new SelectionListener() {
@@ -740,24 +779,6 @@ public class Gui2 {
 
 			}
 		});
-		/*Guard g = new Guard();
-		F leftFTemp = new F("sx");
-		BinaryPredicateOperator bpop = BinaryPredicateOperator.GREATER;
-		Threshold fRightTemp = new F("dx");
-		Predicate tempPredicate1 = new BinaryPredicate(leftFTemp, fRightTemp, bpop);
-		UnaryOp tempOp1 = new UnaryOp(tempPredicate1);
-		g.addOperator(tempOp1);
-		for(int k = 1;k<5;k++){
-			GuardOperator gop = GuardOperator.AND;
-			BinaryOp bopTemp = new BinaryOp(tempPredicate1, gop);
-			g.addOperator(bopTemp);
-		}
-		System.out.println(g.toString());
-		*/
-		
-		
-		
-		
 		
 		shell.setMenuBar(menuBar);
 

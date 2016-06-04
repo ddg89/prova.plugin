@@ -8,6 +8,9 @@ public class Do {
 	
 	private Fix parent; 
 	
+	public Do() {
+		super();
+	}
 	public Fix getParent() {
 		return parent;
 	}

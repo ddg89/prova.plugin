@@ -7,6 +7,9 @@ public class UnaryPredicate extends Predicate {
 		this.op=op;
 		this.f = f;
 	}
+	public UnaryPredicate(){
+		super();
+	}
 	public String toString(){
 		return " "+op.toString()+f.toString()+" ";
 	}

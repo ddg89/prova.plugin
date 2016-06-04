@@ -10,7 +10,6 @@ public class Container {
 	protected Message message;
 	private List<Fix> fixList;
 	private Context parent;
-	protected boolean isSetCheck;
 	
 	public Container (String label, String name, Check check, List<Fix> fixList,Message message,Context parent)  {
 			this.name = name;
@@ -26,7 +25,6 @@ public class Container {
 		this.check = null;
 		this.message = null;
 		this.fixList = new ArrayList<Fix>();
-		this.isSetCheck=false;
 	}
 	public Container() {
 		
