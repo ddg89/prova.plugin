@@ -19,7 +19,6 @@ class Db {
 
 	public static Connection getConnection() throws SQLException, ClassNotFoundException {
 		Connection conn = null;
-		Statement stmt = null;
 
 		Class.forName(DRIVER_NAME);
 		// System.out.println("Connecting to a selected database...");
@@ -49,7 +48,6 @@ class Db {
 		while (rs.next()) {
 			FidList.add(rs.getInt("id"));
 		}
-		System.out.println(FidList.toString());
 		List<Integer> thIdList = new ArrayList<Integer>();
 		for (Integer id : FidList) {
 			String sql2 = "SELECT * FROM f_thresholds WHERE f_id=?";
@@ -61,7 +59,6 @@ class Db {
 			}
 
 		}
-		System.out.println(thIdList.toString());
 		List<Threshold> thresholdList = new ArrayList<Threshold>();
 		for (Integer id : thIdList) {
 			String sql1 = "SELECT name FROM thresholds WHERE id=?";
@@ -78,20 +75,105 @@ class Db {
 		}
 		return thresholdList;
 	}
+	public static List<String> getDo(String contextName) throws ClassNotFoundException, SQLException {
+		Connection conn = Db.getConnection();
+		String sql = "SELECT id FROM context WHERE name=?";
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setString(1, contextName);
+		ResultSet rs = preparedStatement.executeQuery();
+		List<Integer> contextIdList = new ArrayList<Integer>();
+		while (rs.next()) {
+			contextIdList.add(rs.getInt("id"));
+		}
+		List<Integer> DoIdList = new ArrayList<Integer>();
+		for (Integer id : contextIdList) {
+			String sql2 = "SELECT * FROM do_context WHERE context_id=?";
+			PreparedStatement preparedStatement2 = conn.prepareStatement(sql2);
+			preparedStatement2.setInt(1, id);
+			ResultSet rs2 = preparedStatement2.executeQuery();
+			while (rs2.next()) {
+				DoIdList.add(rs2.getInt(2));
+			}
 
+		}
+		List<String> doNameList = new ArrayList<String>();
+		for (Integer id : DoIdList) {
+			String sql1 = "SELECT name FROM do WHERE id=?";
+			PreparedStatement preparedStatement1 = conn.prepareStatement(sql1);
+			preparedStatement1.setInt(1, id);
+			ResultSet rs1 = preparedStatement1.executeQuery();
+			
+			while (rs1.next()) {
+				doNameList.add(rs1.getString(1));
+				
+			}
+			rs1.close();
+		}
+		return doNameList;
+	}
+	public static List<F> getFListToCompare(String fName) throws ClassNotFoundException, SQLException{
+		Connection conn = Db.getConnection();
+		String sql = "SELECT id FROM f WHERE name=?";
+		PreparedStatement preparedStatement = conn.prepareStatement(sql);
+		preparedStatement.setString(1, fName);
+		ResultSet rs = preparedStatement.executeQuery();
+		List<Integer> FidList = new ArrayList<Integer>();
+		while (rs.next()) {
+			FidList.add(rs.getInt("id"));
+		}
+		List<Integer> fToCompIdList = new ArrayList<Integer>();
+		for (Integer id : FidList) {
+			String sql2 = "SELECT * FROM f_f WHERE f_id=?";
+			PreparedStatement preparedStatement2 = conn.prepareStatement(sql2);
+			preparedStatement2.setInt(1, id);
+			ResultSet rs2 = preparedStatement2.executeQuery();
+			while (rs2.next()) {
+				fToCompIdList.add(rs2.getInt(2));
+			}
+
+		}
+		List<F> fList = new ArrayList<F>();
+		for (Integer id : fToCompIdList) {
+			String sql1 = "SELECT * FROM f WHERE id=?";
+			PreparedStatement preparedStatement1 = conn.prepareStatement(sql1);
+			preparedStatement1.setInt(1, id);
+			ResultSet rs1 = preparedStatement1.executeQuery();
+			while (rs1.next()) {
+				F f;
+				String name =rs1.getString(2);
+				String card = rs1.getString(4);
+				if(card.toLowerCase().equals("unary")){
+					f=new Fbool(name,card);
+				}else{
+					f = new Fint(name,card);
+				}
+				fList.add(f);
+
+			}
+			rs1.close();
+		}
+		return fList;
+	}
 	public static List<F> getFList() throws ClassNotFoundException, SQLException {
 		Connection conn = Db.getConnection();
 		// String sql1 = "SELECT name FROM f WHERE post=?";
-		String sql1 = "SELECT name FROM f";
+		String sql1 = "SELECT * FROM f";
 		PreparedStatement preparedStatement1 = conn.prepareStatement(sql1);
 		// preparedStatement1.setInt(1, 56);
 		ResultSet rs1 = preparedStatement1.executeQuery();
 		List<F> fList = new ArrayList<F>();
 
 		while (rs1.next()) {
-			F temp = new F(rs1.getString("name"));
-			fList.add(temp);
-
+			
+			F f;
+			String name =rs1.getString(2);
+			String card = rs1.getString(4);
+			if(card.toLowerCase().equals("unary")){
+				f=new Fbool(name,card);
+			}else{
+				f = new Fint(name,card);
+			}
+			fList.add(f);
 		}
 		rs1.close();
 		return fList;
