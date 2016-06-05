@@ -28,5 +28,7 @@ public class Title {
 	public void setParent(Fix parent) {
 		this.parent = parent;
 	}
-	
+	public String toString(){
+		return this.text;
+	}
 }

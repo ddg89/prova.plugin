@@ -75,6 +75,7 @@ public class MyTitleAreaDialogFixTitle extends TitleAreaDialog {
 
 	  @Override
 	  protected void okPressed() {
+		  saveInput();
 		  if(txtFixTitle.getText().isEmpty())
 		    	return;
 		    super.okPressed();
