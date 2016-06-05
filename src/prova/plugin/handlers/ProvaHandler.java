@@ -62,7 +62,7 @@ public class ProvaHandler extends AbstractHandler {
 		//Gui g = new Gui();
 		//g.createGui(dialog);
 		
-		Gui2 g2 = new Gui2();
+		Gui g2 = new Gui();
 		g2.createGui(dialog);
 		
 		dialog.open();

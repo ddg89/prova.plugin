@@ -1,4 +1,4 @@
-package model2;
+package model;
 
 public class F extends Threshold{
 	private String  card;

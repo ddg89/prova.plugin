@@ -9,6 +9,8 @@ import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.TraverseEvent;
+import org.eclipse.swt.events.TraverseListener;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
@@ -35,27 +37,26 @@ import dialogs.MyTitleAreaDialogCrit;
 import dialogs.MyTitleAreaDialogFixTitle;
 import dialogs.MyTitleAreaDialogMessage;
 import dialogs.MyTitleAreaDialogNewProject;
-import model2.BinaryPredicate;
-import model2.BinaryPredicateOperator;
-import model2.Check;
-import model2.Constraint;
-import model2.Container;
-import model2.Context;
-import model2.Critique;
-//import model2.Critique;
-import model2.Do;
-import model2.Evl2;
-import model2.F;
-import model2.Fix;
-import model2.Guard;
-import model2.GuardOperator;
-import model2.Message;
-import model2.Operation;
-import model2.Predicate;
-import model2.Threshold;
-import model2.Title;
+import model.BinaryPredicate;
+import model.BinaryPredicateOperator;
+import model.Check;
+import model.Constraint;
+import model.Container;
+import model.Context;
+import model.Critique;
+import model.Do;
+import model.Evl2;
+import model.F;
+import model.Fix;
+import model.Guard;
+import model.GuardOperator;
+import model.Message;
+import model.Operation;
+import model.Predicate;
+import model.Threshold;
+import model.Title;
 
-public class Gui2 {
+public class Gui {
 	private Menu menu, menu2;
 
 	private MenuItem removeContextMenuItem, removeCheckMenuItem, removeDoMenuItem, removeFixItem, removeCritiqueItem,
@@ -802,13 +803,13 @@ public class Gui2 {
 			TreeItem contItem = new TreeItem(item, SWT.NONE);
 			contItem.setText(cont.getType()+" " + cont.getName());
 			contItem.setData(cont);
-
+			
 			Check check = cont.getCheck();
 			if (check != null) {
 				TreeItem checkItem = new TreeItem(contItem, SWT.NONE);
 				checkItem.setText("check");
 				checkItem.setData(check);
-
+				checkItem.setExpanded(true);
 				for (Operation op : check.getOperations()) {
 					
 					TreeItem checkChild1 = new TreeItem(checkItem, SWT.NONE);
@@ -832,7 +833,7 @@ public class Gui2 {
 				TreeItem fixItem = new TreeItem(contItem, SWT.NONE);
 				fixItem.setText("fix");
 				fixItem.setData(fix);
-
+				
 				Title title = fix.getTitle();
 				if (title != null) {
 					TreeItem titleItem = new TreeItem(fixItem, SWT.NONE);
@@ -844,21 +845,24 @@ public class Gui2 {
 					TreeItem doItem = new TreeItem(fixItem, SWT.NONE);
 					doItem.setText("do");
 					doItem.setData(d);
+					
 					for (String doFun : d.getFunctions()) {
 						TreeItem doChildItem = new TreeItem(doItem, SWT.NONE);
 						doChildItem.setText(doFun);
 						doChildItem.setData(doFun);
 
 					}
-
+					doItem.setExpanded(true);
 				}
+				fixItem.setExpanded(true);
 			}
 			item.setExpanded(true);
+			contItem.setExpanded(true);
 		}
 		tree.setRedraw(true);
 
 	}
-
+	
 	public static void fillTree2(Tree tree) {
 		// Turn off drawing to avoid flicker
 		tree.setRedraw(false);

@@ -1,4 +1,4 @@
-package model2;
+package model;
 
 public abstract class Predicate {
 

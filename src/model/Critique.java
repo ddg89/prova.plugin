@@ -1,16 +1,15 @@
-package model2;
+package model;
 
 
 
-public class Constraint extends Container {
-	
-	public Constraint(String Name, Context Parent) {
+public class Critique extends Container{
+	public Critique(String Name, Context Parent) {
 		super(Name, Parent);
-		this.type="constraint";
+		this.type="critique";
 	}
 
 	public String toString(){
-		String res="constraint "+name+"{\n";
+		String res="critique "+name+"{\n";
 		if(this.check!=null)
 			res+=check.toString();
 		if(this.message!=null)
@@ -20,6 +19,8 @@ public class Constraint extends Container {
 		}
 		return res;
 	}
+	
+	
 	
 
 }

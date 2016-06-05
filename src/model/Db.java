@@ -1,11 +1,11 @@
-package model2;
+package model;
 
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-import model2.F;
-import model2.Threshold;
+import model.F;
+import model.Threshold;
 
 class Db {
 	

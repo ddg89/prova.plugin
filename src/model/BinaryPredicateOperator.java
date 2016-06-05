@@ -1,4 +1,4 @@
-package model2;
+package model;
 
 public enum BinaryPredicateOperator {
 	GREATER, GREATER_OR_EQUAL, LOWER, LOWER_OR_EQUAL, EQUAL, DIFFERENT;

@@ -1,4 +1,4 @@
-package model2;
+package model;
 
 public class BinaryPredicate extends Predicate {
 	private F left;
