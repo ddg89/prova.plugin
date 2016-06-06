@@ -9,13 +9,13 @@ public class Check {
 	private List<Operation> operations;
 	private Container parent;
 	
+	public Check() {
+		
+	}
 	public Check(List<Operation> operations,Container parent) {
 		super();
 		this.operations=operations;
 		this.parent=parent;
-	}
-	public Check() {
-		
 	}
 	public Check(Container parent){
 		this.operations=new ArrayList<Operation>();

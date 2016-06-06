@@ -7,7 +7,7 @@ import java.util.List;
 import model.F;
 import model.Threshold;
 
-class Db {
+public class Db {
 	
 	private static final String DRIVER_NAME = "com.mysql.jdbc.Driver";
 

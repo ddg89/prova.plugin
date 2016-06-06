@@ -9,9 +9,7 @@ public class BinaryPredicate extends Predicate {
 		this.right = right;
 		this.op=op;
 	}
-	public String toString(){
-		return " "+left.toString()+op.toString()+right.toString()+" ";
-	}
+	
 	public F getLeft() {
 		return left;
 	}
@@ -30,6 +28,8 @@ public class BinaryPredicate extends Predicate {
 	public void setOp(BinaryPredicateOperator op) {
 		this.op = op;
 	}
-		
+	public String toString(){
+		return " "+left.toString()+op.toString()+right.toString()+" ";
+	}	
 
 }

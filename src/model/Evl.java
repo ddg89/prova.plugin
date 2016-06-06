@@ -1,10 +1,9 @@
 package model;
 
-import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Evl {
+public class Evl{
 	List<Context> contextList;
 
 	public Evl(List<Context> contextList) {

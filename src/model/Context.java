@@ -1,7 +1,6 @@
 package model;
 
 
-
 public class Context {
 	private String name;
 	private Container container;

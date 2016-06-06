@@ -2,10 +2,16 @@ package prova.plugin.handlers;
 
 
 
+import java.sql.SQLException;
+
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
 import org.eclipse.swt.dnd.DragSource;
+import org.eclipse.swt.events.DisposeEvent;
+import org.eclipse.swt.events.DisposeListener;
+import org.eclipse.swt.events.FocusEvent;
+import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -46,6 +52,8 @@ import model.GuardOperator;
 import model.Message;
 import model.Operation;
 import model.Title;
+import model.F;
+import model.Db;
 
 public class Gui {
 	private Menu menu, menu2;
@@ -229,6 +237,38 @@ public class Gui {
 		
 		fList.add("f1");
 		
+		
+		
+		tree.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TreeItem[] selected = tree.getSelection();
+				TreeItem temp = selected[0];
+				if(temp.getData().toString().toLowerCase().contains("check")){
+					try {
+						for(F f : Db.getFList()){
+							fList.add(f.toString());
+						}
+					} catch (ClassNotFoundException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					} catch (SQLException e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+				}
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		
 	    FormData fLabelFormData = new FormData();
 	    fLabelFormData.left = new FormAttachment(5);
 	    fLabelFormData.bottom = new FormAttachment(fList);
@@ -236,7 +276,6 @@ public class Gui {
 	    fLabel.setLayoutData(fLabelFormData);
 	    
 	    //F List
-	    fList.setEnabled(false);
 	    
 	    Composite opComposite = new Composite(checkComp, SWT.NONE);
 		FormData opCompositeFormData = new FormData();
@@ -270,7 +309,6 @@ public class Gui {
 	    opLabel.setLayoutData(opLabelFormData);
 
 	    //opList
-	   opList.setEnabled(false);
 	    
 	    Composite thComposite = new Composite(checkComp, SWT.NONE);
 		FormData thCompositeFormData = new FormData();
@@ -300,7 +338,6 @@ public class Gui {
 	    thLabel.setLayoutData(thLabelFormData);
 	    
 	    //thList
-	    thList.setEnabled(false);
 	    
 		Composite doComp = new Composite(right1, SWT.BORDER);
 		doComp.setLayout(new FormLayout());
