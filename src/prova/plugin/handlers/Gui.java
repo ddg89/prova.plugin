@@ -4,29 +4,25 @@ package prova.plugin.handlers;
 
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.dnd.DND;
+import org.eclipse.swt.dnd.DragSource;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.TraverseEvent;
-import org.eclipse.swt.events.TraverseListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
 
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
-import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
-import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.swt.widgets.Tree;
@@ -37,7 +33,6 @@ import dialogs.MyTitleAreaDialogCrit;
 import dialogs.MyTitleAreaDialogFixTitle;
 import dialogs.MyTitleAreaDialogMessage;
 import dialogs.MyTitleAreaDialogNewProject;
-import model.BinaryPredicate;
 import model.BinaryPredicateOperator;
 import model.Check;
 import model.Constraint;
@@ -45,15 +40,11 @@ import model.Container;
 import model.Context;
 import model.Critique;
 import model.Do;
-import model.Evl2;
-import model.F;
+import model.Evl;
 import model.Fix;
-import model.Guard;
 import model.GuardOperator;
 import model.Message;
 import model.Operation;
-import model.Predicate;
-import model.Threshold;
 import model.Title;
 
 public class Gui {
@@ -64,13 +55,14 @@ public class Gui {
 	private MenuItem addTitleMenuItem, addCritiqueMenuItem, addFixMenuItem, addMessageMenuItem, addCheckMenuItem,
 			addDoMenuItem, addContextMenuItem;
 
-	private Evl2 evl;
+	private Evl evl;
 
 	public void createGui(Composite s) {
 		Shell shell = (Shell) s;
 
 		s.setLayout(new FormLayout());
 		s.setSize(800, 600);
+		
 
 		FormLayout fLayout = new FormLayout();
 		fLayout.marginHeight = 5;
@@ -106,7 +98,7 @@ public class Gui {
 		fdTree.bottom = new FormAttachment(100);
 		tree.setLayoutData(fdTree);
 
-		evl = new Evl2();
+		evl = new Evl();
 		tree.setData(evl);
 
 		tree.addMouseListener(new MouseListener() {
@@ -148,6 +140,13 @@ public class Gui {
 		button1.setText("+");
 		Button button2 = new Button(buttonsComp, SWT.PUSH);
 		button2.setText("-");
+		Button button3 = new Button(buttonsComp, SWT.PUSH);
+		button3.setText("<");
+		button3.setEnabled(false);
+		Button button4 = new Button(buttonsComp, SWT.PUSH);
+		button4.setText(">");
+		button4.setEnabled(false);
+		
 		FormData f1 = new FormData();
 		f1.height = 20;
 		f1.width = 20;
@@ -157,9 +156,22 @@ public class Gui {
 		f2.top = new FormAttachment(button1, 5);
 		f2.height = 20;
 		f2.width = 20;
-
+		
+		FormData f3 = new FormData();
+		f3.top = new FormAttachment(button2,5);
+		f3.height = 20;
+		f3.width = 20;
+		
+		FormData f4 = new FormData();
+		f4.top = new FormAttachment(button3,5);
+		f4.height = 20;
+		f4.width = 20;
+				
+		
 		button1.setLayoutData(f1);
 		button2.setLayoutData(f2);
+		button3.setLayoutData(f3);
+		button4.setLayoutData(f4);
 
 		Composite innerRight = new Composite(outer, SWT.BORDER);
 		innerRight.setLayout(new FormLayout());
@@ -206,7 +218,7 @@ public class Gui {
 		
 	    Label fLabel =new Label(fComposite, SWT.NULL);
 	    fLabel.setText("F");
-	    List fList = new List(fComposite, SWT.BORDER | SWT.V_SCROLL);
+	    List fList = new List(fComposite, SWT.BORDER | SWT.V_SCROLL );
 	    
 	    FormData fListFormData = new FormData();
 	    fListFormData.top = new FormAttachment(10);
@@ -215,12 +227,16 @@ public class Gui {
 		fListFormData.bottom = new FormAttachment(99);
 		fList.setLayoutData(fListFormData);
 		
+		fList.add("f1");
+		
 	    FormData fLabelFormData = new FormData();
 	    fLabelFormData.left = new FormAttachment(5);
 	    fLabelFormData.bottom = new FormAttachment(fList);
 	    
 	    fLabel.setLayoutData(fLabelFormData);
 	    
+	    //F List
+	    fList.setEnabled(false);
 	    
 	    Composite opComposite = new Composite(checkComp, SWT.NONE);
 		FormData opCompositeFormData = new FormData();
@@ -233,7 +249,7 @@ public class Gui {
 		opComposite.setLayoutData(opCompositeFormData);
 		
 		opComposite.setLayout(new FormLayout());
-	    List opList = new List(opComposite, SWT.BORDER | SWT.V_SCROLL);
+	    List opList = new List(opComposite, SWT.BORDER | SWT.V_SCROLL );
 	    Label opLabel = new Label(opComposite, SWT.NULL);
 	    opLabel.setText("Op");
 	    
@@ -243,12 +259,19 @@ public class Gui {
 		opListFormData.right = new FormAttachment(99);
 		opListFormData.bottom = new FormAttachment(99);
 		opList.setLayoutData(opListFormData);
+		opList.add(BinaryPredicateOperator.EMPTY.toString());
+		opList.add(BinaryPredicateOperator.EQUAL.toString());
+		
+		
 		
 	    FormData opLabelFormData = new FormData();
 	    opLabelFormData.bottom = new FormAttachment(opList);
 	    opLabelFormData.left = new FormAttachment(5);
 	    opLabel.setLayoutData(opLabelFormData);
 
+	    //opList
+	   opList.setEnabled(false);
+	    
 	    Composite thComposite = new Composite(checkComp, SWT.NONE);
 		FormData thCompositeFormData = new FormData();
 		thCompositeFormData.top = new FormAttachment(0);
@@ -263,7 +286,7 @@ public class Gui {
 	    
 	    Label thLabel = new Label(thComposite, SWT.NULL);
 	    thLabel.setText("Thresholds");
-	    List thList = new List(thComposite, SWT.BORDER | SWT.V_SCROLL);
+	    List thList = new List(thComposite, SWT.BORDER | SWT.V_SCROLL | DND.DROP_COPY);
 	    FormData thListFormData = new FormData();
 	    thListFormData.top = new FormAttachment(10);
 		thListFormData.left = new FormAttachment(1);
@@ -276,7 +299,8 @@ public class Gui {
 	    thLabelFormData.bottom = new FormAttachment(thList);
 	    thLabel.setLayoutData(thLabelFormData);
 	    
-	    
+	    //thList
+	    thList.setEnabled(false);
 	    
 		Composite doComp = new Composite(right1, SWT.BORDER);
 		doComp.setLayout(new FormLayout());
@@ -395,7 +419,6 @@ public class Gui {
 							dialogMessage.create();
 							if (dialogMessage.open() == Window.OK) {
 								txtMsg = dialogMessage.getName();
-								System.out.println(txtMsg);
 
 							} else {
 								return;
@@ -732,9 +755,9 @@ public class Gui {
 		Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
 		cascadeFileMenu.setMenu(fileMenu);
 		
-		MenuItem newItemMenuItem = new MenuItem(fileMenu, SWT.PUSH);
-		newItemMenuItem.setText("&New Evl Project");
-		newItemMenuItem.addSelectionListener(new SelectionListener() {
+		MenuItem newProjectMenuItem = new MenuItem(fileMenu, SWT.PUSH);
+		newProjectMenuItem.setText("&New Evl Project");
+		newProjectMenuItem.addSelectionListener(new SelectionListener() {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -751,10 +774,26 @@ public class Gui {
 				
 				if(confirm){
 					tree.removeAll();
-					evl = new Evl2();
+					evl = new Evl();
 					fillTreeModel2(tree, evl);
 				}
 				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
+		MenuItem saveItem = new MenuItem(fileMenu,SWT.PUSH);
+		saveItem.setText("&Save Project");
+		saveItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				ProjectManagment.Save(evl);
 			}
 			
 			@Override
@@ -788,7 +827,7 @@ public class Gui {
 	}
 
 	
-	private static void fillTreeModel2(Tree tree, Evl2 evl) {
+	private static void fillTreeModel2(Tree tree, Evl evl) {
 		tree.setRedraw(false);
 		for (Context c : evl.getContextList()) {
 			TreeItem item = new TreeItem(tree, SWT.NONE);

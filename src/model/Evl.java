@@ -4,15 +4,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Evl2 {
+public class Evl {
 	List<Context> contextList;
 
-	public Evl2(List<Context> contextList) {
+	public Evl(List<Context> contextList) {
 		super();
 		this.contextList = contextList;
 	}
 
-	public Evl2() {
+	public Evl() {
 		this.contextList = new ArrayList<Context>();
 	}
 

@@ -5,24 +5,24 @@ package model;
 public class Context {
 	private String name;
 	private Container container;
-	private Evl2 parent;
+	private Evl parent;
 	protected boolean isSetContainer;
 	
-	public Context(String name, Container c, Evl2 parent) {
+	public Context(String name, Container c, Evl parent) {
 		super();
 		this.name = name;
 		this.container = c;
 		this.parent = parent;
 		
 	}
-	public Context(String name, Constraint c, Evl2 parent) {
+	public Context(String name, Constraint c, Evl parent) {
 		super();
 		this.name = name;
 		this.container = c;
 		this.parent = parent;
 		
 	}
-	public Context(String contextName, Evl2 parent) {
+	public Context(String contextName, Evl parent) {
 		this.parent=parent;
 		this.name=contextName;
 		
@@ -81,10 +81,10 @@ public class Context {
 			this.container.removeFix(fix);
 		}
 	}
-	public Evl2 getParent() {
+	public Evl getParent() {
 		return parent;
 	}
-	public void setParent(Evl2 parent) {
+	public void setParent(Evl parent) {
 		this.parent = parent;
 	}
 	
