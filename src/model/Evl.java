@@ -3,6 +3,11 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlRootElement;
+
+@XmlRootElement
 public class Evl{
 	List<Context> contextList;
 
@@ -28,6 +33,8 @@ public class Evl{
 				
 
 	}
+	@XmlElementWrapper(name = "Contexts")
+	@XmlElement(name = "Context")
 	public void setContextList(List<Context> contextList) {
 		this.contextList = contextList;
 	}

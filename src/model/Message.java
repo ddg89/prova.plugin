@@ -1,16 +1,12 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class Message {
 	private String text;
 	private Container parent;
 
-	public String getName() {
-		return text;
-	}
-
-	public void setName(String text) {
-		this.text = text;
-	}
+	
 
 	public Message(String text,Container parent) {
 		super();
@@ -24,7 +20,7 @@ public class Message {
 	public String getText() {
 		return text;
 	}
-
+	@XmlElement
 	public void setText(String text) {
 		this.text = text;
 	}
@@ -32,7 +28,7 @@ public class Message {
 	public Container getParent() {
 		return parent;
 	}
-
+	@XmlElement
 	public void setParent(Container parent) {
 		this.parent = parent;
 	}

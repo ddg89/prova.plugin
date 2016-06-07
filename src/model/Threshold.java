@@ -1,5 +1,7 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class Threshold {
 	String text;
 	public Threshold(String text){
@@ -14,6 +16,7 @@ public class Threshold {
 	public String getText() {
 		return text;
 	}
+	@XmlElement
 	public void setText(String text) {
 		this.text = text;
 	}

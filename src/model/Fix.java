@@ -3,6 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 public class Fix {
 	
 	private Title title;
@@ -26,7 +29,7 @@ public class Fix {
 	public Title getTitle() {
 		return title;
 	}
-
+	@XmlElement
 	public void setTitle(Title title) {
 		this.title = title;
 	}
@@ -36,7 +39,7 @@ public class Fix {
 	public Container getParent() {
 		return parent;
 	}
-
+	@XmlElement
 	public void setParent(Container parent) {
 		this.parent = parent;
 	}
@@ -44,7 +47,8 @@ public class Fix {
 	public List<Do> getDoList() {
 		return doList;
 	}
-
+	@XmlElementWrapper(name = "DoList")
+	@XmlElement(name = "Do")
 	public void setDoList(List<Do> doList) {
 		this.doList = doList;
 	}

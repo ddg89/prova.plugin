@@ -1,5 +1,7 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class F extends Threshold{
 	private String  card;
 	public F(String text , String card) {
@@ -13,6 +15,7 @@ public class F extends Threshold{
 	public String getCard() {
 		return card;
 	}
+	@XmlElement
 	public void setCard(String card) {
 		this.card = card;
 	}

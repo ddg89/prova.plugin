@@ -1,5 +1,7 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class Operation {
 	private GuardOperator op ; 
 	private Predicate predicate;
@@ -15,18 +17,21 @@ public class Operation {
 	public GuardOperator getOp() {
 		return op;
 	}
+	@XmlElement
 	public void setOp(GuardOperator op) {
 		this.op = op;
 	}
 	public Predicate getPredicate() {
 		return predicate;
 	}
+	@XmlElement
 	public void setPredicate(Predicate predicate) {
 		this.predicate = predicate;
 	}
 	public Check getParent() {
 		return parent;
 	}
+	@XmlElement
 	public void setParent(Check parent) {
 		this.parent = parent;
 	}

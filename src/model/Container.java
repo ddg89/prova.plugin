@@ -3,6 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 public class Container {
 	protected String type;
 	protected String name;
@@ -33,53 +36,31 @@ public class Container {
 	public Context getParent() {
 		return parent;
 	}
-
-
-
+	@XmlElement
 	public void setParent(Context parent) {
 		this.parent = parent;
 	}
-
-
-
-	
-
-
 	public void removeCheck(){
 		this.check=null;
 	}
-
-
-	
-
-
 	public String getName() {
 		return name;
 	}
-
-
-
+	@XmlElement
 	public void setName(String name) {
 		this.name = name;
 	}
-
-
-
 	public Check getCheck() {
 		return check;
 	}
-
-
-
+	@XmlElement
 	public void setCheck(Check check) {
 		this.check = check;
 	}
-
-
-
 	public Message getMessage() {
 		return message;
 	}
+	@XmlElement
 	public void setMessage(Message message) {
 		this.message = message;
 	}
@@ -98,7 +79,8 @@ public class Container {
 		this.fixList.remove(f);
 	}
 	
-
+	@XmlElementWrapper(name = "FixList")
+	@XmlElement(name = "Fix")
 	public void setFixList(List<Fix> fixList) {
 		this.fixList = fixList;
 	}
@@ -128,6 +110,7 @@ public class Container {
 	public String getType() {
 		return type;
 	}
+	@XmlElement
 	public void setType(String type) {
 		this.type = type;
 	}

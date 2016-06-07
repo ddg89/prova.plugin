@@ -1,5 +1,7 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class UnaryPredicate extends Predicate {
 	private UnaryOperator op;
 	private F f;
@@ -16,12 +18,14 @@ public class UnaryPredicate extends Predicate {
 	public UnaryOperator getOp() {
 		return op;
 	}
+	@XmlElement
 	public void setOp(UnaryOperator op) {
 		this.op = op;
 	}
 	public F getF() {
 		return f;
 	}
+	@XmlElement
 	public void setF(F f) {
 		this.f = f;
 	}

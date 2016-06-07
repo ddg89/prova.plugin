@@ -1,5 +1,7 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class Title {
 	private String text;
 	private Fix parent;
@@ -19,12 +21,14 @@ public class Title {
 	public String getText() {
 		return text;
 	}
+	@XmlElement
 	public void setText(String text) {
 		this.text = text;
 	}
 	public Fix getParent() {
 		return parent;
 	}
+	@XmlElement
 	public void setParent(Fix parent) {
 		this.parent = parent;
 	}

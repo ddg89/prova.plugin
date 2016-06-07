@@ -1,5 +1,7 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
+
 public class BinaryPredicate extends Predicate {
 	private F left;
 	private Threshold right;
@@ -13,18 +15,21 @@ public class BinaryPredicate extends Predicate {
 	public F getLeft() {
 		return left;
 	}
+	@XmlElement
 	public void setLeft(F left) {
 		this.left = left;
 	}
 	public Threshold getRight() {
 		return right;
 	}
+	@XmlElement
 	public void setRight(Threshold right) {
 		this.right = right;
 	}
 	public BinaryPredicateOperator getOp() {
 		return op;
 	}
+	@XmlElement
 	public void setOp(BinaryPredicateOperator op) {
 		this.op = op;
 	}

@@ -946,7 +946,7 @@ public class Gui {
 			Message message = cont.getMessage();
 			if (message != null) {
 				TreeItem messageItem = new TreeItem(contItem, SWT.NONE);
-				messageItem.setText("message : " + message.getName());
+				messageItem.setText("message : " + message.getText());
 				messageItem.setData(message);
 			}
 

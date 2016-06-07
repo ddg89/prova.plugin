@@ -3,6 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 public class Check {
 	
 
@@ -31,6 +34,7 @@ public class Check {
 	public Container getParent() {
 		return parent;
 	}
+	@XmlElement
 	public void setParent(Container parent) {
 		this.parent = parent;
 	}
@@ -51,7 +55,8 @@ public class Check {
 	public List<Operation> getOperations() {
 		return operations;
 	}
-
+	@XmlElementWrapper(name = "Operations")
+	@XmlElement(name = "Operation")
 	public void setOperations(List<Operation> operations) {
 		this.operations = operations;
 	}

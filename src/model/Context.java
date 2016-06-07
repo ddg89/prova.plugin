@@ -1,5 +1,6 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
 
 public class Context {
 	private String name;
@@ -34,6 +35,7 @@ public class Context {
 	public String getName() {
 		return name;
 	}
+	@XmlElement
 	public void setName(String name) {
 		this.name = name;
 	}
@@ -42,6 +44,7 @@ public class Context {
 			return null;
 		return  this.container;
 	}
+	@XmlElement
 	public void setContainer(Container c) {
 		this.container = c;
 		
@@ -83,6 +86,7 @@ public class Context {
 	public Evl getParent() {
 		return parent;
 	}
+	@XmlElement
 	public void setParent(Evl parent) {
 		this.parent = parent;
 	}

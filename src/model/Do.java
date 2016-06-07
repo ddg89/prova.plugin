@@ -3,6 +3,9 @@ package model;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementWrapper;
+
 public class Do {
 	private List<String> functions;
 	
@@ -14,6 +17,7 @@ public class Do {
 	public Fix getParent() {
 		return parent;
 	}
+	@XmlElement
 	public void setParent(Fix parent) {
 		this.parent = parent;
 	}
@@ -26,6 +30,8 @@ public class Do {
 	public List<String> getFunctions() {
 		return functions;
 	}
+	@XmlElementWrapper(name = "Functions")
+	@XmlElement(name = "Function")
 	public void setFunctions(List<String> functions) {
 		this.functions = functions;
 	}
