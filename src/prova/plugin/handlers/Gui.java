@@ -25,6 +25,8 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.DirectoryDialog;
+import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
@@ -246,7 +248,7 @@ public class Gui {
 				TreeItem[] selected = tree.getSelection();
 				TreeItem temp = selected[0];
 				if(temp.getData().toString().toLowerCase().contains("check")){
-					try {
+					/*try {
 						for(F f : Db.getFList()){
 							fList.add(f.toString());
 						}
@@ -256,7 +258,7 @@ public class Gui {
 					} catch (SQLException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
-					}
+					}*/
 				}
 				
 			}
@@ -830,16 +832,59 @@ public class Gui {
 			
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				ProjectManagment.Save(evl);
+				FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+			    dialog.setFilterNames(new String[] {  "All Files (*.*)" });
+			    dialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); // Windows
+			    dialog.setFilterPath("c:\\"); // Windows path
+			    dialog.setFileName("");
+			    String dir = dialog.open();
+			    ProjectManagment.Save(evl,dir);
 			}
 			
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
+				FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+			    dialog.setFilterNames(new String[] {  "All Files (*.*)" });
+			    dialog.setFilterExtensions(new String[] { "*.xml", "*.*" }); // Windows
+			    dialog.setFilterPath("c:\\"); // Windows path
+			    dialog.setFileName("");
+			    String dir = dialog.open();
+			    ProjectManagment.Save(evl,dir);
 				
 			}
 		});
-		
+		MenuItem openProjectItem = new MenuItem(fileMenu, SWT.PUSH);
+		openProjectItem.setText("&Open existing Project");
+		openProjectItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dlg = new FileDialog(shell);
+				dlg.setText("Open Project...");
+				dlg.setFilterPath("C:/");
+			    String[] filterExt = { "*.*" };
+			    dlg.setFilterExtensions(filterExt);
+		        String dir = dlg.open();
+		        evl = ProjectManagment.Open(dir);
+		        tree.removeAll();
+		        fillTreeModel2(tree, evl);
+				
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				FileDialog dlg = new FileDialog(shell);
+				dlg.setText("Open Project...");
+				dlg.setFilterPath("C:/");
+			    String[] filterExt = { "*.*" };
+			    dlg.setFilterExtensions(filterExt);
+		        String dir = dlg.open();
+		        Evl evlTemp = ProjectManagment.Open(dir);
+		        tree.removeAll();
+		        fillTreeModel2(tree, evlTemp);
+				
+			}
+		});		
 		MenuItem exitItem = new MenuItem(fileMenu, SWT.PUSH);
 		exitItem.setText("&Exit");
 		exitItem.addSelectionListener(new SelectionListener() {

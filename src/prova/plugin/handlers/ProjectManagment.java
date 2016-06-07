@@ -1,6 +1,15 @@
 package prova.plugin.handlers;
 
+import java.beans.XMLDecoder;
+import java.beans.XMLEncoder;
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.FileWriter;
 import java.io.IOException;
 
@@ -9,29 +18,32 @@ import com.google.gson.Gson;
 import model.Evl;
 
 public class ProjectManagment {
-	public static Gson Save(Evl evl){
-		Gson gson = new Gson();
+	public static void Save(Evl evl,String path){
 		
-		/*try {
-		      File file = new File("C:\test.dav");
-		      FileWriter fw = new FileWriter(file);
-		      fw.write(gson.toJson(evl));
-		      fw.flush();
-		      fw.close();
-		    }
-		    catch(IOException e) { 
-		      e.printStackTrace();
-		    }*/
-		try (FileWriter file = new FileWriter("C:/Users/Davide/Desktop/file1.dav")) {
-			file.write(gson.toJson(evl));
-			System.out.println("Successfully Copied JSON Object to File...");
-		}catch(IOException e) { 
-		      e.printStackTrace();
+		try {
+			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(path)));
+			encoder.writeObject(evl);
+			encoder.close();
+
+		} catch (FileNotFoundException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		return gson;
+		
+		
 	}
-	public static Evl Open(Gson gson){
-		Evl evl = null;
-		return evl;
+	public static Evl Open(String path){
+		    XMLDecoder dec;
+			try {
+				dec = new XMLDecoder (new BufferedInputStream(new FileInputStream(path)));
+				Evl evl = (Evl)dec.readObject();
+			    dec.close();
+			    return evl;
+			} catch (FileNotFoundException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			return null;
+		    
 	}
 }
