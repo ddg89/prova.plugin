@@ -1,4 +1,4 @@
-package model;
+package model.copy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,16 +15,19 @@ public class Container {
 	@XmlElementWrapper(name = "fixies")
 	@XmlElement(name = "fix")
 	private List<Fix> fixList;
+	private Context parent;
 	
-	public Container (String label, String name, Check check, List<Fix> fixList,Message message)  {
+	public Container (String label, String name, Check check, List<Fix> fixList,Message message,Context parent)  {
 			this.name = name;
 			this.check = check;
 			this.fixList = fixList;
 			this.message=message;
+			this.parent=parent;
 		
 	}
-	public Container( String critiqueName) {
+	public Container( String critiqueName, Context parent) {
 		this.name=critiqueName;
+		this.parent=parent;
 		this.check = null;
 		this.message = null;
 		this.fixList = new ArrayList<Fix>();
@@ -33,6 +36,12 @@ public class Container {
 		
 	}
 
+	public Context getParent() {
+		return parent;
+	}
+	public void setParent(Context parent) {
+		this.parent = parent;
+	}
 	public String getName() {
 		return name;
 	}

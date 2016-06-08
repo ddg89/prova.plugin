@@ -4,8 +4,8 @@ package model;
 
 public class Constraint extends Container {
 	
-	public Constraint(String Name, Context Parent) {
-		super(Name, Parent);
+	public Constraint(String Name) {
+		super(Name);
 		this.type="constraint";
 	}
 

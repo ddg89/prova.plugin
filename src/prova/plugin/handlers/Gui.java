@@ -2,7 +2,12 @@ package prova.plugin.handlers;
 
 
 
+import java.io.FileNotFoundException;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.xml.bind.JAXBException;
 
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
@@ -19,7 +24,6 @@ import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.graphics.Rectangle;
-
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
@@ -28,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -228,7 +231,7 @@ public class Gui {
 		
 	    Label fLabel =new Label(fComposite, SWT.NULL);
 	    fLabel.setText("F");
-	    List fList = new List(fComposite, SWT.BORDER | SWT.V_SCROLL );
+	    org.eclipse.swt.widgets.List fList = new org.eclipse.swt.widgets.List(fComposite, SWT.BORDER | SWT.V_SCROLL );
 	    
 	    FormData fListFormData = new FormData();
 	    fListFormData.top = new FormAttachment(10);
@@ -290,7 +293,7 @@ public class Gui {
 		opComposite.setLayoutData(opCompositeFormData);
 		
 		opComposite.setLayout(new FormLayout());
-	    List opList = new List(opComposite, SWT.BORDER | SWT.V_SCROLL );
+		org.eclipse.swt.widgets.List opList = new org.eclipse.swt.widgets.List(opComposite, SWT.BORDER | SWT.V_SCROLL );
 	    Label opLabel = new Label(opComposite, SWT.NULL);
 	    opLabel.setText("Op");
 	    
@@ -326,7 +329,7 @@ public class Gui {
 	    
 	    Label thLabel = new Label(thComposite, SWT.NULL);
 	    thLabel.setText("Thresholds");
-	    List thList = new List(thComposite, SWT.BORDER | SWT.V_SCROLL | DND.DROP_COPY);
+	    org.eclipse.swt.widgets.List thList = new org.eclipse.swt.widgets.List(thComposite, SWT.BORDER | SWT.V_SCROLL | DND.DROP_COPY);
 	    FormData thListFormData = new FormData();
 	    thListFormData.top = new FormAttachment(10);
 		thListFormData.left = new FormAttachment(1);
@@ -351,7 +354,7 @@ public class Gui {
 		doFormData.bottom = new FormAttachment(100);
 		doComp.setLayoutData(doFormData);
 		
-		List doList = new List(doComp, SWT.BORDER | SWT.V_SCROLL);
+		org.eclipse.swt.widgets.List doList = new org.eclipse.swt.widgets.List(doComp, SWT.BORDER | SWT.V_SCROLL);
 		Label doLabel = new Label(doComp, SWT.NONE);
 		doLabel.setText("Do");
 		
@@ -428,14 +431,20 @@ public class Gui {
 						public void widgetSelected(SelectionEvent e) {
 
 							TreeItem temp = selected[0];
-
+							TreeItem parent = temp.getParentItem();
+							Context contParent =(Context) parent.getData();
 							Container cSelected = (Container) temp.getData();
 
-							Check checkNew = new Check(cSelected);
-							
-
-							// set Check to critique
-							evl.setCheckToContainer(cSelected.getParent(), cSelected, checkNew);
+							Check checkNew = new Check();
+							//cSelected.setCheck(checkNew);
+							for(Context c : evl.getContextList()){
+								if (c.equals(contParent)) {
+									if (c.getContainer().equals(cSelected)) {
+										c.getContainer().setCheck(checkNew);
+									}
+								}
+							}
+							//evl.setCheckToContainer(cSelected.getParent(), cSelected, checkNew);
 
 							tree.removeAll();
 							tree.setData(evl);
@@ -450,7 +459,8 @@ public class Gui {
 						public void widgetSelected(SelectionEvent e) {
 
 							TreeItem temp = selected[0];
-
+							TreeItem parent = temp.getParentItem();
+							Context contParent =(Context) parent.getData();
 							Container cSelected = (Container) temp.getData();
 
 							String txtMsg = "";
@@ -463,9 +473,16 @@ public class Gui {
 								return;
 							}
 
-							Message msg = new Message(txtMsg, cSelected);
-
-							evl.setCMessage(cSelected.getParent(), cSelected, msg);
+							Message msg = new Message(txtMsg);
+							for(Context c : evl.getContextList()){
+								if (c.equals(contParent)) {
+									if(c.getContainer().equals(cSelected)){
+										cSelected.setMessage(msg);
+										c.setContainer(cSelected);
+									}
+								}
+							}
+							//evl.setCMessage(cSelected.getParent(), cSelected, msg);
 
 							tree.removeAll();
 							tree.setData(evl);
@@ -480,12 +497,24 @@ public class Gui {
 						public void widgetSelected(SelectionEvent e) {
 
 							TreeItem temp = selected[0];
-
+							TreeItem parent = temp.getParentItem();
 							Container cSelected = (Container) temp.getData();
-
-							Fix fixNew = new Fix(cSelected);
-
-							evl.addFix2C(cSelected.getParent(), cSelected, fixNew);
+							Context contextParent = (Context)parent.getData();
+							Fix fixNew = new Fix();
+							List<Fix> fixList = cSelected.getFixList();
+							fixList.add(fixNew);
+							//cSelected.setFixList(fixList);
+							for(Context c : evl.getContextList()){
+								if(c.equals(contextParent)){
+									if(c.getContainer().equals(cSelected)){
+										cSelected.setFixList(fixList);
+										c.setContainer(cSelected);
+									}
+									
+								}
+							}
+							
+							//evl.addFix2C(cSelected.getParent(), cSelected, fixNew);
 
 							tree.removeAll();
 							tree.setData(evl);
@@ -529,13 +558,12 @@ public class Gui {
 						public void widgetSelected(SelectionEvent e) {
 
 							TreeItem temp = selected[0];
-
 							Fix fixSelected = (Fix) temp.getData();
-
-							Do d = new Do(fixSelected);
-
-							Container fpar = fixSelected.getParent();
-							evl.addDotoFix(fpar.getParent(), fpar, fixSelected, d);
+							Do d = new Do();
+							List<Do> doListTemp = fixSelected.getDoList();
+							doListTemp.add(d);
+							fixSelected.setDoList(doListTemp);
+							//evl.addDotoFix(fpar.getParent(), fpar, fixSelected, d);
 
 							tree.removeAll();
 							tree.setData(evl);
@@ -562,19 +590,22 @@ public class Gui {
 							} else {
 								return;
 							}
-
 							TreeItem temp = selected[0];
 							Context contToAddParent = (Context) temp.getData();
 							tree.removeAll();
 							Container cont2add = null;
 							if (type.equals("critique")) {
-								cont2add = new Critique(contName, contToAddParent);
+								cont2add = new Critique(contName);
 							}else if (type.equals("constraint")) {
-								cont2add = new Constraint(contName, contToAddParent);
+								cont2add = new Constraint(contName);
 							}
 							
-
-							evl.setContainer(contToAddParent, cont2add);
+							for(Context c : evl.getContextList()){
+								if(c.equals(contToAddParent)){
+									c.setContainer(cont2add);
+								}
+							}
+							//evl.setContainer(contToAddParent, cont2add);
 
 							fillTreeModel2(tree, evl);
 
@@ -599,9 +630,11 @@ public class Gui {
 
 							tree.removeAll();
 
-							Context cNew = new Context(contextName, evl);
-
-							evl.addContext(cNew);
+							Context cNew = new Context(contextName);
+							List<Context> cList = evl.getContextList();
+							cList.add(cNew);		
+							evl.setContextList(cList);
+							//evl.addContext(cNew);
 
 							fillTreeModel2(tree, evl);
 
@@ -645,7 +678,10 @@ public class Gui {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
 							Context contextTemp2 = (Context) temp.getData();
-							evl.removeContext(contextTemp2);
+							List<Context>cList = evl.getContextList();
+							cList.remove(contextTemp2);
+							evl.setContextList(cList);
+							//evl.removeContext(contextTemp2);
 							tree.removeAll();
 							tree.setData(evl);
 							fillTreeModel2(tree, evl);
@@ -661,10 +697,19 @@ public class Gui {
 					removeCheckMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
+							TreeItem parent = temp.getParentItem();
+							Container parentContainer = (Container)parent.getData();
 							Check checkTemp2 = (Check) temp.getData();
-							Container contTtemp2 = checkTemp2.getParent();
-
-							evl.removeCheck(contTtemp2.getParent(), contTtemp2, checkTemp2);
+							//Container contTtemp2 = checkTemp2.getParent();
+							
+							for(Context context :evl.getContextList()){
+								if (context.getContainer().equals(parentContainer)) {
+									if(context.getContainer().getCheck().equals(checkTemp2)){
+										context.getContainer().setCheck(null);
+									}
+								}
+							}
+							//evl.removeCheck(contTtemp2.getParent(), contTtemp2, checkTemp2);
 							tree.removeAll();
 							tree.setData(evl);
 							fillTreeModel2(tree, evl);
@@ -680,10 +725,26 @@ public class Gui {
 					removeDoMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
+							TreeItem parent = temp.getParentItem();
+							TreeItem grandParent = parent.getParentItem();
+							TreeItem contextParent = grandParent.getParentItem();
+							
 							Do DoTemp2 = (Do) temp.getData();
-							Fix fixTemp = DoTemp2.getParent();
-							Container cTemp = fixTemp.getParent();
-							evl.removeDoFromFix(cTemp.getParent(), cTemp, fixTemp, DoTemp2);
+							Fix fixTemp = (Fix)parent.getData();
+							Container cTemp = (Container)grandParent.getData();
+							
+							for(Context context : evl.getContextList()){
+								if (context.equals(contextParent.getData())) {
+									List<Fix> fList = context.getContainer().getFixList();
+									for(Fix f : fList ){
+										if (f.equals(fixTemp)) {
+											f.getDoList().remove(DoTemp2);
+										}
+									}
+								}
+							}
+							
+							//evl.removeDoFromFix(cTemp.getParent(), cTemp, fixTemp, DoTemp2);
 
 							tree.removeAll();
 							tree.setData(evl);
@@ -700,11 +761,20 @@ public class Gui {
 					removeFixItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
+							TreeItem parent = temp.getParentItem();
+							TreeItem grandParent = parent.getParentItem();
 							Fix fixToDel = (Fix) temp.getData();
-							Container critTemp = fixToDel.getParent();
-							Context contTemp = critTemp.getParent();
+							Container containerParent = (Container) parent.getData();
+							Context contextGrandParent = (Context) grandParent.getData();
 
-							evl.removeFixFromC(contTemp, critTemp, fixToDel);
+							for(Context c : evl.getContextList()){
+								if (c.equals(contextGrandParent)) {
+									if (c.getContainer().equals(containerParent)) {
+										c.getContainer().getFixList().remove(fixToDel);
+									}
+								}
+							}
+							//evl.removeFixFromC(contTemp, critTemp, fixToDel);
 
 							tree.removeAll();
 							tree.setData(evl);
@@ -721,9 +791,17 @@ public class Gui {
 					removeCritiqueItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
+							TreeItem parent = temp.getParentItem();
 							Container critToDel = (Container) temp.getData();
-							Context contTemp = critToDel.getParent();
-							evl.removeContainer(contTemp, critToDel);
+							Context contTemp = (Context) parent.getData();
+							for(Context c : evl.getContextList()){
+								if (c.equals(contTemp)) {
+									if (c.getContainer().equals(critToDel)) {
+										c.setContainer(null);
+									}
+								}
+							}
+							//evl.removeContainer(contTemp, critToDel);
 							tree.removeAll();
 							tree.setData(evl);
 							fillTreeModel2(tree, evl);
@@ -738,10 +816,20 @@ public class Gui {
 					removeMessageItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
+							TreeItem parent = temp.getParentItem();
+							TreeItem grandParent = parent.getParentItem();
 							Message messageTemp = (Message) temp.getData();
-							Container critTemp = messageTemp.getParent();
-
-							evl.removeCMessage(critTemp.getParent(), critTemp);
+							Container critTemp = (Container) parent.getData();
+							Context contextTemp = (Context) grandParent.getData();
+							
+							for(Context context : evl.getContextList()){
+								if (context.equals(contextTemp)) {
+									if(context.getContainer().equals(critTemp)){
+										context.getContainer().setMessage(null);
+									}
+								}
+							}
+							//evl.removeCMessage(critTemp.getParent(), critTemp);
 							tree.removeAll();
 							tree.setData(evl);
 							fillTreeModel2(tree, evl);
@@ -755,11 +843,29 @@ public class Gui {
 					removeTitleItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
-
+							TreeItem parent = temp.getParentItem();
+							TreeItem grandParent = parent.getParentItem();
+							TreeItem contextParent = grandParent.getParentItem();
 							Title titleTemp = (Title) temp.getData();
-							Fix fixTemp = titleTemp.getParent();
-							Container critTemp = fixTemp.getParent();
-							evl.removeTitleFromFix(critTemp.getParent(), critTemp, fixTemp);
+							Fix fixTemp = (Fix)parent.getData();
+							Container contTemp = (Container)grandParent.getData();
+							Context contextTemp = (Context)contextParent.getData();
+							
+							for(Context c : evl.getContextList()){
+								if (c.equals(contextTemp)) {
+									if(c.getContainer().equals(contTemp)){
+										List<Fix> fixList = c.getContainer().getFixList();
+										for(Fix f: fixList){
+											if (f.equals(fixTemp)) {
+												f.setTitle(null);
+											}
+										}
+										c.getContainer().setFixList(fixList);
+									}
+								}
+							}
+							
+							//evl.removeTitleFromFix(critTemp.getParent(), critTemp, fixTemp);
 
 							tree.removeAll();
 							tree.setData(evl);
@@ -838,7 +944,12 @@ public class Gui {
 			    dialog.setFilterPath("c:\\"); // Windows path
 			    dialog.setFileName("");
 			    String dir = dialog.open();
-			    ProjectManagment.Save(evl,dir);
+			    try {
+					ProjectManagment.Save(evl,dir);
+				} catch (JAXBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 			}
 			
 			@Override
@@ -849,7 +960,12 @@ public class Gui {
 			    dialog.setFilterPath("c:\\"); // Windows path
 			    dialog.setFileName("");
 			    String dir = dialog.open();
-			    ProjectManagment.Save(evl,dir);
+			    try {
+					ProjectManagment.Save(evl,dir);
+				} catch (JAXBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 				
 			}
 		});
@@ -865,7 +981,12 @@ public class Gui {
 			    String[] filterExt = { "*.*" };
 			    dlg.setFilterExtensions(filterExt);
 		        String dir = dlg.open();
-		        evl = ProjectManagment.Open(dir);
+		        try {
+					evl = ProjectManagment.Open(dir);
+				} catch (FileNotFoundException | JAXBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		        tree.removeAll();
 		        fillTreeModel2(tree, evl);
 				
@@ -879,9 +1000,14 @@ public class Gui {
 			    String[] filterExt = { "*.*" };
 			    dlg.setFilterExtensions(filterExt);
 		        String dir = dlg.open();
-		        Evl evlTemp = ProjectManagment.Open(dir);
+		        try {
+					evl = ProjectManagment.Open(dir);
+				} catch (FileNotFoundException | JAXBException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
 		        tree.removeAll();
-		        fillTreeModel2(tree, evlTemp);
+		        fillTreeModel2(tree, evl);
 				
 			}
 		});		

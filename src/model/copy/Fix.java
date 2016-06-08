@@ -1,4 +1,4 @@
-package model;
+package model.copy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,21 +14,33 @@ public class Fix {
 	@XmlElementWrapper(name = "ListDo")
 	@XmlElement(name = "do")
 	private List<Do> doList;
+	private Container parent;
 	
-	public Fix(Title title, List<Do> doList) {
+	public Fix(Title title, List<Do> doList,Container parent) {
 		super();
 		this.title = title;
 		this.doList = doList;
+		this.parent=parent;
 	}
-	public Fix(){
+	public Fix(Container parent){
 		this.title=null;
 		this.doList = new ArrayList<Do>();
+		this.parent = parent;
+	}
+	public Fix(){
+		
 	}
 	public Title getTitle() {
 		return title;
 	}
 	public void setTitle(Title title) {
 		this.title = title;
+	}
+	public Container getParent() {
+		return parent;
+	}
+	public void setParent(Container parent) {
+		this.parent = parent;
 	}
 
 	public List<Do> getDoList() {

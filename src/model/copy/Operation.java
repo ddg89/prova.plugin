@@ -1,4 +1,4 @@
-package model;
+package model.copy;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -6,8 +6,9 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Operation {
 	private GuardOperator op ; 
 	private Predicate predicate;
+	private Check parent;
 	
-	public Operation(GuardOperator op, Predicate predicate ){
+	public Operation(GuardOperator op, Predicate predicate , Check parent){
 		this.op = op;
 		this.predicate = predicate;
 	}
@@ -25,6 +26,12 @@ public class Operation {
 	}
 	public void setPredicate(Predicate predicate) {
 		this.predicate = predicate;
+	}
+	public Check getParent() {
+		return parent;
+	}
+	public void setParent(Check parent) {
+		this.parent = parent;
 	}
 	public String toString(){
 		return op.toString()+predicate.toString();

@@ -1,14 +1,14 @@
-package model;
+package model.copy;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
-public class Fbool extends F {
+public class Fint extends F {
 
-	public Fbool(String text ,String card) {
+	public Fint(String text ,String card) {
 		super(text,card);
 	}
-	public Fbool(){
+	public Fint(){
 		super();
 	}
 

@@ -1,4 +1,4 @@
-package model;
+package model.copy;
 
 import javax.xml.bind.annotation.XmlRootElement;
 

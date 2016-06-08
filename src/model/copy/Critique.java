@@ -1,10 +1,10 @@
-package model;
+package model.copy;
 
 
 
 public class Critique extends Container{
-	public Critique(String Name) {
-		super(Name);
+	public Critique(String Name, Context Parent) {
+		super(Name, Parent);
 		this.type="critique";
 	}
 

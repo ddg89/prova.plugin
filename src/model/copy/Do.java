@@ -1,4 +1,4 @@
-package model;
+package model.copy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,12 +12,23 @@ public class Do {
 	@XmlElementWrapper(name = "functionList")
 	@XmlElement(name = "function")
 	private List<String> functions;
+	private Fix parent; 
 	
-	public Do(){
-		
+	public Do(Fix parent){
+		this.parent=parent;
 		functions = new ArrayList<String>();
 		
 	}
+	public Do() {
+		super();
+	}
+	public Fix getParent() {
+		return parent;
+	}
+	public void setParent(Fix parent) {
+		this.parent = parent;
+	}
+	
 	public List<String> getFunctions() {
 		return functions;
 	}

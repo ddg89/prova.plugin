@@ -1,4 +1,4 @@
-package model;
+package model.copy;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,15 +12,28 @@ public class Check {
 	@XmlElementWrapper(name = "operationList")
 	@XmlElement(name = "operation")
 	private List<Operation> operations;
+	private Container parent;
 	
-	public Check(List<Operation> operations) {
-		super();
-		this.operations=operations;
-	}
-	public Check(){
-		this.operations=new ArrayList<Operation>();
+	public Check() {
 		
 	}
+	public Check(List<Operation> operations,Container parent) {
+		super();
+		this.operations=operations;
+		this.parent=parent;
+	}
+	public Check(Container parent){
+		this.operations=new ArrayList<Operation>();
+		this.parent = parent;
+		
+	}
+	public Container getParent() {
+		return parent;
+	}
+	public void setParent(Container parent) {
+		this.parent = parent;
+	}
+	
 	public List<Operation> getOperations() {
 		return operations;
 	}

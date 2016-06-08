@@ -1,49 +1,43 @@
 package prova.plugin.handlers;
 
-import java.beans.XMLDecoder;
-import java.beans.XMLEncoder;
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
+
+import java.awt.Container;
 import java.io.File;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileWriter;
-import java.io.IOException;
+import java.io.FileReader;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
 
 import com.google.gson.Gson;
 
+import model.Check;
+import model.Context;
+import model.Do;
 import model.Evl;
 
 public class ProjectManagment {
-	public static void Save(Evl evl,String path){
-		
-		try {
-			XMLEncoder encoder = new XMLEncoder(new BufferedOutputStream(new FileOutputStream(path)));
-			encoder.writeObject(evl);
-			encoder.close();
+	public static void Save(Evl evl,String path) throws JAXBException{
+		/*// create JAXB context and instantiate marshaller
+	    //JAXBContext context = JAXBContext.newInstance(Evl.class);
+	    JAXBContext context = JAXBContext.newInstance(new Class[] {Evl.class,Context.class,model.Container.class,Check.class,model.Fix.class,Do.class,model.Operation.class,model.Fix.class,model.Fbool.class,model.Fint.class,model.Guard.class,model.Threshold.class,model.Title.class,model.Message.class,model.Critique.class,model.Constraint.class});
+	    Marshaller m = context.createMarshaller();
+	    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
+	 // Write to File
+	    m.marshal(evl, new File(path));*/
+		Gson gson = new Gson();
+		System.out.println(gson.toJson(evl));
 
-		} catch (FileNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		
-		
 	}
-	public static Evl Open(String path){
-		    XMLDecoder dec;
-			try {
-				dec = new XMLDecoder (new BufferedInputStream(new FileInputStream(path)));
-				Evl evl = (Evl)dec.readObject();
-			    dec.close();
-			    return evl;
-			} catch (FileNotFoundException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-			return null;
+	public static Evl Open(String path) throws JAXBException, FileNotFoundException{
+			Evl evl = null;
+			JAXBContext context = JAXBContext.newInstance(Evl.class);
+			Unmarshaller um = context.createUnmarshaller();
+		    evl = (Evl) um.unmarshal(new FileReader(path));
+			
+			return evl;
 		    
 	}
 }
