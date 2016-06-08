@@ -12,8 +12,6 @@ public class Container {
 	protected String name;
 	protected Check check;
 	protected Message message;
-	@XmlElementWrapper(name = "fixies")
-	@XmlElement(name = "fix")
 	private List<Fix> fixList;
 	
 	public Container (String label, String name, Check check, List<Fix> fixList,Message message)  {
@@ -51,6 +49,8 @@ public class Container {
 	public void setMessage(Message message) {
 		this.message = message;
 	}
+	@XmlElementWrapper
+	@XmlElement
 	public List<Fix> getFixList() {
 		return fixList;
 	}

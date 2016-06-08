@@ -9,8 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 @XmlRootElement
 public class Check {
 	
-	@XmlElementWrapper(name = "operationList")
-	@XmlElement(name = "operation")
+	
 	private List<Operation> operations;
 	
 	public Check(List<Operation> operations) {
@@ -21,6 +20,8 @@ public class Check {
 		this.operations=new ArrayList<Operation>();
 		
 	}
+	@XmlElementWrapper
+	@XmlElement
 	public List<Operation> getOperations() {
 		return operations;
 	}

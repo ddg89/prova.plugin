@@ -11,8 +11,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 public class Fix {
 	
 	private Title title;
-	@XmlElementWrapper(name = "ListDo")
-	@XmlElement(name = "do")
 	private List<Do> doList;
 	
 	public Fix(Title title, List<Do> doList) {
@@ -30,7 +28,8 @@ public class Fix {
 	public void setTitle(Title title) {
 		this.title = title;
 	}
-
+	@XmlElementWrapper
+	@XmlElement
 	public List<Do> getDoList() {
 		return doList;
 	}

@@ -9,8 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement(namespace = "model")
 public class Evl{
-	@XmlElementWrapper(name = "contexts")
-	@XmlElement(name = "context")
+	
 	List<Context> contextList;
 
 	public Evl(List<Context> contextList) {
@@ -21,7 +20,8 @@ public class Evl{
 	public Evl() {
 		this.contextList = new ArrayList<Context>();
 	}
-
+	@XmlElementWrapper
+	@XmlElement
 	public List<Context> getContextList() {
 		return contextList;
 	}

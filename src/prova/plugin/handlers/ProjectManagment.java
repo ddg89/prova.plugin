@@ -20,15 +20,14 @@ import model.Evl;
 
 public class ProjectManagment {
 	public static void Save(Evl evl,String path) throws JAXBException{
-		/*// create JAXB context and instantiate marshaller
-	    //JAXBContext context = JAXBContext.newInstance(Evl.class);
-	    JAXBContext context = JAXBContext.newInstance(new Class[] {Evl.class,Context.class,model.Container.class,Check.class,model.Fix.class,Do.class,model.Operation.class,model.Fix.class,model.Fbool.class,model.Fint.class,model.Guard.class,model.Threshold.class,model.Title.class,model.Message.class,model.Critique.class,model.Constraint.class});
+		// create JAXB context and instantiate marshaller
+	    JAXBContext context = JAXBContext.newInstance(Evl.class);
+	    //JAXBContext context = JAXBContext.newInstance(new Class[] {Evl.class});
 	    Marshaller m = context.createMarshaller();
 	    m.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-	 // Write to File
-	    m.marshal(evl, new File(path));*/
-		Gson gson = new Gson();
-		System.out.println(gson.toJson(evl));
+	    // Write to File
+	    m.marshal(evl, new File(path));
+		
 
 	}
 	public static Evl Open(String path) throws JAXBException, FileNotFoundException{

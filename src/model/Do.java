@@ -9,8 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 
 @XmlRootElement
 public class Do {
-	@XmlElementWrapper(name = "functionList")
-	@XmlElement(name = "function")
+	
 	private List<String> functions;
 	
 	public Do(){
@@ -18,6 +17,8 @@ public class Do {
 		functions = new ArrayList<String>();
 		
 	}
+	@XmlElementWrapper
+	@XmlElement
 	public List<String> getFunctions() {
 		return functions;
 	}
