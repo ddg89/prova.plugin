@@ -12,11 +12,6 @@ import javax.xml.bind.JAXBException;
 import org.eclipse.jface.window.Window;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.dnd.DND;
-import org.eclipse.swt.dnd.DragSource;
-import org.eclipse.swt.events.DisposeEvent;
-import org.eclipse.swt.events.DisposeListener;
-import org.eclipse.swt.events.FocusEvent;
-import org.eclipse.swt.events.FocusListener;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.MouseListener;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -29,7 +24,6 @@ import org.eclipse.swt.layout.FormData;
 import org.eclipse.swt.layout.FormLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.DirectoryDialog;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
@@ -69,10 +63,12 @@ public class Gui {
 			addDoMenuItem, addContextMenuItem;
 
 	private Evl evl;
-
+	List<F> listF = new ArrayList<F>();
+	List<String> listDo = new ArrayList<String>();
+	
 	public void createGui(Composite s) {
 		Shell shell = (Shell) s;
-
+		
 		s.setLayout(new FormLayout());
 		s.setSize(800, 600);
 		
@@ -121,6 +117,36 @@ public class Gui {
 				Tree tempTree = (Tree) e.getSource();
 				if (tempTree.getItem(new Point(e.x, e.y)) != null) {
 					// an item was clicked.
+					TreeItem[] selected = tree.getSelection();
+					TreeItem itemSelected = selected[0];
+					String string = "";
+					for (TreeItem t : selected) {
+						string += t;
+					}
+					if(string.toLowerCase().contains("check")){
+						
+						try {
+							listF = Db.getFList();
+						} catch (ClassNotFoundException e1) {
+							e1.printStackTrace();
+						} catch (SQLException e1) {
+							e1.printStackTrace();
+						}
+						
+					}else if (string.toLowerCase().contains("do")) {
+						TreeItem fix = itemSelected.getParentItem();
+						TreeItem container = fix.getParentItem();
+						TreeItem context = container.getParentItem();
+						Context temp = (Context) context.getData();
+						try {
+							listDo = Db.getDo(temp.getName());
+						} catch (ClassNotFoundException | SQLException e1) {
+							// TODO Auto-generated catch block
+							e1.printStackTrace();
+						}
+						
+						
+					}
 				} else {
 					tree.deselectAll();
 				}
@@ -240,39 +266,9 @@ public class Gui {
 		fListFormData.bottom = new FormAttachment(99);
 		fList.setLayoutData(fListFormData);
 		
-		fList.add("f1");
-		
-		
-		
-		tree.addSelectionListener(new SelectionListener() {
-			
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				TreeItem[] selected = tree.getSelection();
-				TreeItem temp = selected[0];
-				if(temp.getData().toString().toLowerCase().contains("check")){
-					/*try {
-						for(F f : Db.getFList()){
-							fList.add(f.toString());
-						}
-					} catch (ClassNotFoundException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					} catch (SQLException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}*/
-				}
-				
-			}
-			
-			@Override
-			public void widgetDefaultSelected(SelectionEvent e) {
-				// TODO Auto-generated method stub
-				
-			}
-		});
-		
+		for(F f : listF){
+			fList.add(f.getText());
+		}
 		
 	    FormData fLabelFormData = new FormData();
 	    fLabelFormData.left = new FormAttachment(5);
@@ -303,8 +299,14 @@ public class Gui {
 		opListFormData.right = new FormAttachment(99);
 		opListFormData.bottom = new FormAttachment(99);
 		opList.setLayoutData(opListFormData);
-		opList.add(BinaryPredicateOperator.EMPTY.toString());
+		
 		opList.add(BinaryPredicateOperator.EQUAL.toString());
+		opList.add(BinaryPredicateOperator.DIFFERENT.toString());
+		opList.add(BinaryPredicateOperator.GREATER.toString());
+		opList.add(BinaryPredicateOperator.GREATER_OR_EQUAL.toString());
+		opList.add(BinaryPredicateOperator.LOWER.toString());
+		opList.add(BinaryPredicateOperator.LOWER_OR_EQUAL.toString());
+		opList.add(BinaryPredicateOperator.EMPTY.toString());
 		
 		
 		
@@ -364,7 +366,12 @@ public class Gui {
 		doListFormData.right = new FormAttachment(95);
 		doListFormData.bottom = new FormAttachment(95);
 		doList.setLayoutData(doListFormData);
+		
 		doList.setVisible(false);
+		
+		for(String d : listDo){
+			doList.add(d);
+		}
 		
 		FormData doLabelFormData = new FormData();
 		doLabelFormData.left = new FormAttachment(20);
