@@ -14,7 +14,7 @@ public class Fix {
 	private List<Do> doList;
 	
 	public Fix(Title title, List<Do> doList) {
-		super();
+		//super();
 		this.title = title;
 		this.doList = doList;
 	}
@@ -38,19 +38,19 @@ public class Fix {
 	}
 	public String toString(){
 		
-		String res = "fix {\n";
+		String res = "\t\t\tfix {\n";
 		if(title!=null)
-			res+="title : \""+title+"\" \n";
+			res+="\t\t\t\ttitle : \""+title+"\" \n";
 		
 		for(Do d : this.getDoList()){
-			res+="do {\n";
+			res+="\t\t\t\tdo {\n";
 			for(String s : d.getFunctions()){
-				res+=s+"\n";
+				res+="\t\t\t\t\t"+s+"\n";
 			}
-			res+="}\n";
+			res+="\t\t\t\t}\n";
 		}
 		
-		res+="}\n";
+		res+="\t\t\t}\n";
 		return res;
 	}
 	

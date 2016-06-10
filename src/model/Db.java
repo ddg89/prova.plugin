@@ -180,6 +180,20 @@ public class Db {
 		rs1.close();
 		return fList;
 	}
+	public static List<String> getContexts() throws ClassNotFoundException, SQLException{
+		Connection conn = Db.getConnection();
+		String sql1 = "SELECT * FROM context";
+		PreparedStatement preparedStatement1 = conn.prepareStatement(sql1);
+		ResultSet rs1 = preparedStatement1.executeQuery();
+		List<String> cList = new ArrayList<String>();
+		while (rs1.next()) {
+			
+			String name =rs1.getString(2);
+			cList.add(name);
+		}
+		rs1.close();
+		return cList;
+	}
 	public Connection getDbConnection() {
 		return dbConnection;
 	}
@@ -198,4 +212,5 @@ public class Db {
 	public static String getPass() {
 		return PASS;
 	}
+	
 }

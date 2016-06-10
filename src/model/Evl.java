@@ -21,7 +21,7 @@ public class Evl{
 		this.contextList = new ArrayList<Context>();
 	}
 	@XmlElementWrapper
-	@XmlElement
+	@XmlElement(name="context")
 	public List<Context> getContextList() {
 		return contextList;
 	}

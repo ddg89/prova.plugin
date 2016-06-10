@@ -11,12 +11,13 @@ public class Critique extends Container{
 	public String toString(){
 		String res="critique "+name+"{\n";
 		if(this.check!=null)
-			res+=check.toString();
+			res+="\t\t"+check.toString();
 		if(this.message!=null)
-			res+=message.toString();
+			res+="\t\t"+message.toString();
 		for(Fix f : this.getFixList()){
-			res+=f.toString();
+			res+="\t\t"+f.toString();
 		}
+		res +="\n\t}"; 
 		return res;
 	}
 	

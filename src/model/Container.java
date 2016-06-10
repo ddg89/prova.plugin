@@ -6,7 +6,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
-@XmlRootElement
+@XmlRootElement(name="invariant")
 public class Container {
 	protected String type;
 	protected String name;
@@ -50,7 +50,7 @@ public class Container {
 		this.message = message;
 	}
 	@XmlElementWrapper
-	@XmlElement
+	@XmlElement(name="fix")
 	public List<Fix> getFixList() {
 		return fixList;
 	}

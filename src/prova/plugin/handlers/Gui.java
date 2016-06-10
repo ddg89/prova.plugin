@@ -2,7 +2,14 @@ package prova.plugin.handlers;
 
 
 
+import java.io.BufferedWriter;
+import java.io.File;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +39,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import org.eclipse.swt.widgets.Tree;
 import org.eclipse.swt.widgets.TreeItem;
+import org.eclipse.swt.widgets.Widget;
 
 import dialogs.MyTitleAreaDialogCont;
 import dialogs.MyTitleAreaDialogCrit;
@@ -120,33 +128,8 @@ public class Gui {
 					TreeItem[] selected = tree.getSelection();
 					TreeItem itemSelected = selected[0];
 					String string = "";
-					for (TreeItem t : selected) {
-						string += t;
-					}
-					if(string.toLowerCase().contains("check")){
-						
-						try {
-							listF = Db.getFList();
-						} catch (ClassNotFoundException e1) {
-							e1.printStackTrace();
-						} catch (SQLException e1) {
-							e1.printStackTrace();
-						}
-						
-					}else if (string.toLowerCase().contains("do")) {
-						TreeItem fix = itemSelected.getParentItem();
-						TreeItem container = fix.getParentItem();
-						TreeItem context = container.getParentItem();
-						Context temp = (Context) context.getData();
-						try {
-							listDo = Db.getDo(temp.getName());
-						} catch (ClassNotFoundException | SQLException e1) {
-							// TODO Auto-generated catch block
-							e1.printStackTrace();
-						}
-						
-						
-					}
+					
+					
 				} else {
 					tree.deselectAll();
 				}
@@ -266,9 +249,7 @@ public class Gui {
 		fListFormData.bottom = new FormAttachment(99);
 		fList.setLayoutData(fListFormData);
 		
-		for(F f : listF){
-			fList.add(f.getText());
-		}
+		fillFList(fList);
 		
 	    FormData fLabelFormData = new FormData();
 	    fLabelFormData.left = new FormAttachment(5);
@@ -446,8 +427,10 @@ public class Gui {
 							//cSelected.setCheck(checkNew);
 							for(Context c : evl.getContextList()){
 								if (c.equals(contParent)) {
-									if (c.getContainer().equals(cSelected)) {
-										c.getContainer().setCheck(checkNew);
+									for(Container container : c.getContainers()){
+										if(container.equals(cSelected)){
+											container.setCheck(checkNew);
+										}
 									}
 								}
 							}
@@ -483,9 +466,10 @@ public class Gui {
 							Message msg = new Message(txtMsg);
 							for(Context c : evl.getContextList()){
 								if (c.equals(contParent)) {
-									if(c.getContainer().equals(cSelected)){
-										cSelected.setMessage(msg);
-										c.setContainer(cSelected);
+									for(Container container : c.getContainers()){
+										if (container.equals(cSelected)) {
+											container.setMessage(msg);
+										}
 									}
 								}
 							}
@@ -513,11 +497,11 @@ public class Gui {
 							//cSelected.setFixList(fixList);
 							for(Context c : evl.getContextList()){
 								if(c.equals(contextParent)){
-									if(c.getContainer().equals(cSelected)){
-										cSelected.setFixList(fixList);
-										c.setContainer(cSelected);
+									for(Container container : c.getContainers()){
+										if(container.equals(cSelected)){
+											container.setFixList(fixList);
+										}
 									}
-									
 								}
 							}
 							
@@ -549,7 +533,7 @@ public class Gui {
 							} else {
 								return;
 							}
-							Title titleNew = new Title(title, fixSelected);
+							Title titleNew = new Title(title);
 							fixSelected.setTitle(titleNew);
 
 							tree.removeAll();
@@ -570,8 +554,6 @@ public class Gui {
 							List<Do> doListTemp = fixSelected.getDoList();
 							doListTemp.add(d);
 							fixSelected.setDoList(doListTemp);
-							//evl.addDotoFix(fpar.getParent(), fpar, fixSelected, d);
-
 							tree.removeAll();
 							tree.setData(evl);
 							fillTreeModel2(tree, evl);
@@ -583,7 +565,7 @@ public class Gui {
 				}
 				if ((string.toLowerCase().contains("context"))) {
 					addCritiqueMenuItem = new MenuItem(menu, SWT.PUSH);
-					addCritiqueMenuItem.setText("Set Critique/Constraint");
+					addCritiqueMenuItem.setText("Add Critique/Constraint");
 					addCritiqueMenuItem.addSelectionListener(new SelectionAdapter() {
 						public void widgetSelected(SelectionEvent e) {
 							String contName = "";
@@ -606,14 +588,14 @@ public class Gui {
 							}else if (type.equals("constraint")) {
 								cont2add = new Constraint(contName);
 							}
-							
+							//System.out.println(cont2add.toString());
 							for(Context c : evl.getContextList()){
 								if(c.equals(contToAddParent)){
-									c.setContainer(cont2add);
+									List<Container> tempContainerList = c.getContainers();
+									tempContainerList.add(cont2add);
+									c.setContainer(tempContainerList);
 								}
 							}
-							//evl.setContainer(contToAddParent, cont2add);
-
 							fillTreeModel2(tree, evl);
 
 						}
@@ -705,14 +687,18 @@ public class Gui {
 						public void widgetSelected(SelectionEvent e) {
 							TreeItem temp = selected[0];
 							TreeItem parent = temp.getParentItem();
+							TreeItem grandParent = parent.getParentItem();
 							Container parentContainer = (Container)parent.getData();
+							Context grandParentContext = (Context)grandParent.getData();
 							Check checkTemp2 = (Check) temp.getData();
 							//Container contTtemp2 = checkTemp2.getParent();
 							
 							for(Context context :evl.getContextList()){
-								if (context.getContainer().equals(parentContainer)) {
-									if(context.getContainer().getCheck().equals(checkTemp2)){
-										context.getContainer().setCheck(null);
+								if(context.equals(grandParentContext)){
+									for(Container container : context.getContainers()){
+										if (container.equals(parentContainer)) {
+											container.setCheck(null);
+										}
 									}
 								}
 							}
@@ -742,11 +728,16 @@ public class Gui {
 							
 							for(Context context : evl.getContextList()){
 								if (context.equals(contextParent.getData())) {
-									List<Fix> fList = context.getContainer().getFixList();
-									for(Fix f : fList ){
-										if (f.equals(fixTemp)) {
-											f.getDoList().remove(DoTemp2);
+									for(Container container : context.getContainers()){
+										if (container.equals(cTemp)) {
+											List<Fix> fList = container.getFixList();
+											for(Fix f : fList ){
+												if (f.equals(fixTemp)) {
+													f.getDoList().remove(DoTemp2);
+												}
+											}
 										}
+										
 									}
 								}
 							}
@@ -776,8 +767,10 @@ public class Gui {
 
 							for(Context c : evl.getContextList()){
 								if (c.equals(contextGrandParent)) {
-									if (c.getContainer().equals(containerParent)) {
-										c.getContainer().getFixList().remove(fixToDel);
+									for(Container container : c.getContainers()){
+										if (container.equals(containerParent)) {
+											container.getFixList().remove(fixToDel);
+										}
 									}
 								}
 							}
@@ -802,10 +795,8 @@ public class Gui {
 							Container critToDel = (Container) temp.getData();
 							Context contTemp = (Context) parent.getData();
 							for(Context c : evl.getContextList()){
-								if (c.equals(contTemp)) {
-									if (c.getContainer().equals(critToDel)) {
-										c.setContainer(null);
-									}
+								if(c.equals(contTemp)){
+									c.getContainers().remove(critToDel);
 								}
 							}
 							//evl.removeContainer(contTemp, critToDel);
@@ -831,8 +822,10 @@ public class Gui {
 							
 							for(Context context : evl.getContextList()){
 								if (context.equals(contextTemp)) {
-									if(context.getContainer().equals(critTemp)){
-										context.getContainer().setMessage(null);
+									for(Container container : context.getContainers()){
+										if (container.equals(critTemp)) {
+											container.setMessage(null);
+										}
 									}
 								}
 							}
@@ -860,14 +853,16 @@ public class Gui {
 							
 							for(Context c : evl.getContextList()){
 								if (c.equals(contextTemp)) {
-									if(c.getContainer().equals(contTemp)){
-										List<Fix> fixList = c.getContainer().getFixList();
-										for(Fix f: fixList){
-											if (f.equals(fixTemp)) {
-												f.setTitle(null);
+									for(Container container : c.getContainers()){
+										if (container.equals(contTemp)) {
+											List<Fix> fixList = container.getFixList();
+											for(Fix f: fixList){
+												if (f.equals(fixTemp)) {
+													f.setTitle(null);
+												}
 											}
+											container.setFixList(fixList);
 										}
-										c.getContainer().setFixList(fixList);
 									}
 								}
 							}
@@ -901,11 +896,55 @@ public class Gui {
 		});
 
 		Menu menuBar = new Menu(shell, SWT.BAR);
+		
 		MenuItem cascadeFileMenu = new MenuItem(menuBar, SWT.CASCADE);
 		cascadeFileMenu.setText("&File");
+		
+		MenuItem cascadeFileMenu2 = new MenuItem(menuBar, SWT.CASCADE);
+		cascadeFileMenu2.setText("&Save");
 
 		Menu fileMenu = new Menu(shell, SWT.DROP_DOWN);
 		cascadeFileMenu.setMenu(fileMenu);
+		
+		Menu saveMenu = new Menu(shell, SWT.DROP_DOWN);
+		cascadeFileMenu2.setMenu(saveMenu);
+		
+		MenuItem saveEvlMenuItem = new MenuItem(saveMenu, SWT.PUSH);
+		saveEvlMenuItem.setText("Save in .evl");
+		saveEvlMenuItem.addSelectionListener(new SelectionListener() {
+			
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				FileDialog dialog = new FileDialog(shell, SWT.SAVE);
+			    dialog.setFilterNames(new String[] {  "All Files (*.evl)" });
+			    dialog.setFilterExtensions(new String[] { "*.evl" }); // Windows
+			    dialog.setFilterPath("c:\\"); // Windows path
+			    dialog.setFileName("");
+			    String dir = dialog.open();
+
+			    File file = new File(dir);
+			      FileWriter fw;
+				try {
+					fw = new FileWriter(file);
+					BufferedWriter bw = new BufferedWriter(fw);
+				    bw.write(evl.toString());
+				    bw.flush();
+				    bw.close();
+				    System.out.println(evl.toString());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+			      
+			}
+			
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
+		
 		
 		MenuItem newProjectMenuItem = new MenuItem(fileMenu, SWT.PUSH);
 		newProjectMenuItem.setText("&New Evl Project");
@@ -985,7 +1024,7 @@ public class Gui {
 				FileDialog dlg = new FileDialog(shell);
 				dlg.setText("Open Project...");
 				dlg.setFilterPath("C:/");
-			    String[] filterExt = { "*.*" };
+			    String[] filterExt = { "*.xml" };
 			    dlg.setFilterExtensions(filterExt);
 		        String dir = dlg.open();
 		        try {
@@ -1004,7 +1043,7 @@ public class Gui {
 				FileDialog dlg = new FileDialog(shell);
 				dlg.setText("Open Project...");
 				dlg.setFilterPath("C:/");
-			    String[] filterExt = { "*.*" };
+			    String[] filterExt = { "*.xml" };
 			    dlg.setFilterExtensions(filterExt);
 		        String dir = dlg.open();
 		        try {
@@ -1048,70 +1087,68 @@ public class Gui {
 			TreeItem item = new TreeItem(tree, SWT.NONE);
 			item.setText("context " + c.getName());
 			item.setData(c);
-			Container cont = c.getContainer();
-			if (cont == null) {
-
-				tree.setRedraw(true);
-				continue;
-			}
-			TreeItem contItem = new TreeItem(item, SWT.NONE);
-			contItem.setText(cont.getType()+" " + cont.getName());
-			contItem.setData(cont);
-			
-			Check check = cont.getCheck();
-			if (check != null) {
-				TreeItem checkItem = new TreeItem(contItem, SWT.NONE);
-				checkItem.setText("check");
-				checkItem.setData(check);
-				checkItem.setExpanded(true);
-				for (Operation op : check.getOperations()) {
-					
-					TreeItem checkChild1 = new TreeItem(checkItem, SWT.NONE);
-					checkChild1.setText(op.getPredicate().toString());
-					checkChild1.setData(op.getPredicate());
-					if(op.getOp()==GuardOperator.EMPTY){
-						TreeItem checkChild2 = new TreeItem(checkItem, SWT.NONE);
-						checkChild2.setText(op.getOp().toString());
-						checkChild2.setData(op.getOp());
-					}
-				}
-			}
-			Message message = cont.getMessage();
-			if (message != null) {
-				TreeItem messageItem = new TreeItem(contItem, SWT.NONE);
-				messageItem.setText("message : " + message.getText());
-				messageItem.setData(message);
-			}
-
-			for (Fix fix : cont.getFixList()) {
-				TreeItem fixItem = new TreeItem(contItem, SWT.NONE);
-				fixItem.setText("fix");
-				fixItem.setData(fix);
+			for(Container cont : c.getContainers()){
+				TreeItem contItem = new TreeItem(item, SWT.NONE);
+				contItem.setText(cont.getType()+" " + cont.getName());
+				contItem.setData(cont);
 				
-				Title title = fix.getTitle();
-				if (title != null) {
-					TreeItem titleItem = new TreeItem(fixItem, SWT.NONE);
-					titleItem.setText("title : " + title.getText());
-					titleItem.setData(fix.getTitle());
-
+				Check check = cont.getCheck();
+				if (check != null) {
+					TreeItem checkItem = new TreeItem(contItem, SWT.NONE);
+					checkItem.setText("check");
+					checkItem.setData(check);
+					checkItem.setExpanded(true);
+					for (Operation op : check.getOperations()) {
+						
+						TreeItem checkChild1 = new TreeItem(checkItem, SWT.NONE);
+						checkChild1.setText(op.getPredicate().toString());
+						checkChild1.setData(op.getPredicate());
+						if(op.getOp()==GuardOperator.EMPTY){
+							TreeItem checkChild2 = new TreeItem(checkItem, SWT.NONE);
+							checkChild2.setText(op.getOp().toString());
+							checkChild2.setData(op.getOp());
+						}
+					}
 				}
-				for (Do d : fix.getDoList()) {
-					TreeItem doItem = new TreeItem(fixItem, SWT.NONE);
-					doItem.setText("do");
-					doItem.setData(d);
+				Message message = cont.getMessage();
+				if (message != null) {
+					TreeItem messageItem = new TreeItem(contItem, SWT.NONE);
+					messageItem.setText("message : " + message.getText());
+					messageItem.setData(message);
+				}
+
+				for (Fix fix : cont.getFixList()) {
+					TreeItem fixItem = new TreeItem(contItem, SWT.NONE);
+					fixItem.setText("fix");
+					fixItem.setData(fix);
 					
-					for (String doFun : d.getFunctions()) {
-						TreeItem doChildItem = new TreeItem(doItem, SWT.NONE);
-						doChildItem.setText(doFun);
-						doChildItem.setData(doFun);
+					Title title = fix.getTitle();
+					if (title != null) {
+						TreeItem titleItem = new TreeItem(fixItem, SWT.NONE);
+						titleItem.setText("title : " + title.getText());
+						titleItem.setData(fix.getTitle());
 
 					}
-					doItem.setExpanded(true);
+					for (Do d : fix.getDoList()) {
+						TreeItem doItem = new TreeItem(fixItem, SWT.NONE);
+						doItem.setText("do");
+						doItem.setData(d);
+						
+						for (String doFun : d.getFunctions()) {
+							TreeItem doChildItem = new TreeItem(doItem, SWT.NONE);
+							doChildItem.setText(doFun);
+							doChildItem.setData(doFun);
+
+						}
+						doItem.setExpanded(true);
+					}
+					fixItem.setExpanded(true);
 				}
-				fixItem.setExpanded(true);
+				contItem.setExpanded(true);
 			}
+			
 			item.setExpanded(true);
-			contItem.setExpanded(true);
+			
 		}
 		tree.setRedraw(true);
 
@@ -1140,6 +1177,18 @@ public class Gui {
 		}
 		// Turn drawing back on!
 		tree.setRedraw(true);
+	}
+	private void fillFList(Widget list){
+		org.eclipse.swt.widgets.List fList = (org.eclipse.swt.widgets.List) list;
+		try {
+			List<F> fToAdd = Db.getFList();
+			for(F f : fToAdd ){
+				fList.add(f.toString());
+			}
+			
+		} catch (ClassNotFoundException | SQLException e) {
+			e.printStackTrace();
+		}
 	}
 
 }

@@ -20,7 +20,7 @@ public class Message {
 		this.text = text;
 	}
 	public String toString(){
-		return "message : \""+text+"\" \n";
+		return "\t\t\tmessage : \""+text+"\" \n";
 	}
 
 }

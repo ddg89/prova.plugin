@@ -29,12 +29,12 @@ public class Check {
 		this.operations = operations;
 	}
 	public String toString(){
-		String res = "check{\n";
+		String res = "\t\t\tcheck{\n";
 		for(Operation op : this.getOperations()){
-			res+=op.toString();
+			res+="\t\t\t\t"+op.toString();
 		}
 		;
-		res+="\n}\n";
+		res+="\n\t\t\t}\n";
 		
 		return res;
 		
