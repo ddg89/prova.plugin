@@ -1,7 +1,13 @@
 package model;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
+/** *
+ *It represents a Threshold value
+ *
+ *@author Davide Di Gironimo
+ */
 @XmlRootElement
 public class Threshold {
 	String text;
@@ -10,6 +16,7 @@ public class Threshold {
 	}
 	public Threshold() {
 	}
+	@XmlElement
 	public String getText() {
 		return text;
 	}

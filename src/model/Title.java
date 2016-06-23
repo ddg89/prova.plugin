@@ -1,10 +1,15 @@
 package model;
 
 import javax.xml.bind.annotation.XmlRootElement;
+
+/** *
+ *It represent the <code>title</code> shown when a fix construct is executed
+ *@author Davide Di Gironimo
+ */
 @XmlRootElement
 public class Title {
 	private String text;
-	//private Fix parent;
+
 	public Title(String text) {
 		//super();
 		this.text = text;
@@ -20,6 +25,6 @@ public class Title {
 		this.text = text;
 	}
 	public String toString(){
-		return this.text;
+		return "title : \""+this.getText()+"\"";
 	}
 }

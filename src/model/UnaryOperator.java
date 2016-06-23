@@ -6,7 +6,7 @@ public enum UnaryOperator {
 	public String toString() {
 		switch (this) { 
 		case NOT:
-			return "!";
+			return "not";
 			
 		}
 		return "";

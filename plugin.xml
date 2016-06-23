@@ -18,7 +18,7 @@
          point="org.eclipse.ui.handlers">
       <handler
             commandId="prova.plugin.commands.sampleCommand"
-            class="prova.plugin.handlers.ProvaHandler">
+            class="plugin.handlers.ProvaHandler">
       </handler>
    </extension>
    <extension

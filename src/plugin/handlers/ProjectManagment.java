@@ -1,4 +1,4 @@
-package prova.plugin.handlers;
+package plugin.handlers;
 
 
 import java.awt.Container;

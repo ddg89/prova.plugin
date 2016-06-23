@@ -5,11 +5,11 @@ public enum GuardOperator {
 	public String toString(){
 		switch (this) {
 		case AND:
-			return "AND";
+			return "and";
 		case OR:
-			return "OR";
+			return "or";
 		case XOR:
-			return "XOR";
+			return "xor";
 		case EMPTY:
 			return "";
 			

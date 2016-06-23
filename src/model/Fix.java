@@ -1,26 +1,43 @@
 package model;
 
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+
+/** *
+ *It represent the <code>fix</code> construct 
+ *@author Davide Di Gironimo
+ */
 @XmlRootElement
 public class Fix {
-	
+	/**
+	  * This is the title shown when a fix construct is executed. 
+	  * 
+	  */
 	private Title title;
-	private List<Do> doList;
+	/**
+	  * This is the list of Do executed.
+	  * 
+	  */
+	private Do doList;
 	
-	public Fix(Title title, List<Do> doList) {
+	/**
+	   * Constructor of the class.
+	   * It initialize the <code>Title</code> and the <code>DoList</code>.
+	   * 
+	   * @param title Fix title
+	   * @param doList Listo of Do 
+	   * 
+	   */
+	public Fix(Title title, Do doList) {
 		//super();
 		this.title = title;
 		this.doList = doList;
 	}
 	public Fix(){
 		this.title=null;
-		this.doList = new ArrayList<Do>();
+		this.doList = new Do();
 	}
 	public Title getTitle() {
 		return title;
@@ -28,25 +45,32 @@ public class Fix {
 	public void setTitle(Title title) {
 		this.title = title;
 	}
-	@XmlElementWrapper
+	
 	@XmlElement
-	public List<Do> getDoList() {
+	public Do getDoList() {
 		return doList;
 	}
-	public void setDoList(List<Do> doList) {
+	public void setDoList(Do doList) {
 		this.doList = doList;
 	}
 	public String toString(){
 		
-		String res = "\t\t\tfix {\n";
+		String res = "\t\tfix {\n";
 		if(title!=null)
-			res+="\t\t\t\ttitle : \""+title+"\" \n";
+			res+="\t\t\t\t"+title.toString()+" \n";
 		
-		for(Do d : this.getDoList()){
+		/*for(Do d : this.getDoList()){
 			res+="\t\t\t\tdo {\n";
 			for(String s : d.getFunctions()){
 				res+="\t\t\t\t\t"+s+"\n";
 			}
+			res+="\t\t\t\t}\n";
+		}*/
+		if (this.doList!=null) {
+			res+="\t\t\t\tdo {\n";
+			
+				res+=""+this.doList.toString()+"\n";
+			
 			res+="\t\t\t\t}\n";
 		}
 		
