@@ -15,13 +15,13 @@ import view.Gui;
  * @see org.eclipse.core.commands.IHandler
  * @see org.eclipse.core.commands.AbstractHandler
  */
-public class ProvaHandler extends AbstractHandler {
+public class PluginHandler extends AbstractHandler {
 	/**
 	 * The constructor.
 	 */
 	Button get;
 	Button set;
-	public ProvaHandler() {
+	public PluginHandler() {
 	}
 
 	/**
